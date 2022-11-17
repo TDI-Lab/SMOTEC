@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epos
+  labels:
+    app: epos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: epos
+  template:
+    metadata:
+      labels:
+        app: epos
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: epos
+        image: zeinabne/edge-testbed:epos1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8085
+        volumeMounts:
+        - name: pvc-nfs-pv1
+          mountPath: /datasets/
+      volumes:
+      - name: pvc-nfs-pv1
+        persistentVolumeClaim:
+          claimName: pvc-nfs-pv1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: epos-service
+spec:
+  selector:
+    app: epos
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085
+      nodePort: 30005
+
