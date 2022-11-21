@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: agent3
+  labels: 
+    app: agent3
+spec:
+  replicas: 1
+  selctor:
+    matchLabels:
+      app: agent3
+  template:
+    metadata:
+      labels:
+        app: agent3
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: agent3
+        image: zeinabne/edge-testbed:pub
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8083
+---
+apiVersion: v1
+kind: Service
+metadate:
+  name: agent3-service
+spec:
+  selector:
+    app: agent3
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+    port: 8083
+    targetPort: 8083
+    nodePort: 30003

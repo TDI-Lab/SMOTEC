@@ -1,13 +1,21 @@
 package V2I;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import experiment.IEPOSExperiment;
 //import experiment.IEPOSExperiment;
@@ -26,17 +34,17 @@ public class Example_scenario1 {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
 		
-		boolean win =true;
-		String cityconfigfile;
+		//boolean win =true;
+		//String cityconfigfile;
 		
 		if (!Map.initializeCity(Constants.cityconfigfile))
 	    	System.exit(0);
 		
-		String Mobility_Dataset = Constants.molitypath;
+		//String Mobility_Dataset = Constants.mobilitypath;
 		
 		create_agents(Constants.numAgents);
 		//System.out.println("num of agents: "+agents.size());
-		read_mobility();
+		//read_mobility();
 		
 		//from a json file
 		//create_infrastructure(Constants.numEdgeNodes);
@@ -58,34 +66,63 @@ public class Example_scenario1 {
 		// TODO Auto-generated method stub
 		
 	}
-//create agent container using k3s: the container should include mobility info and infrastructure info
+
 	private static void create_agents(int numOFUsers) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
-		for (int i = 0 ; i<numOFUsers ; i++) {
-			User u = new User(i, "agent"+i);
-			agents.add(u);
-			//https://stackoverflow.com/questions/6856028/difference-between-processbuilder-and-runtime-exec
+		java.util.Map<String, String> env = new HashMap<String, String>();
+		//the shell script must be executable and readable for this user
+		//https://stackoverflow.com/questions/52132008/java-permission-denied-when-attempting-to-execute-shell-script
+		
+		//Map mMap = new HashMap();
+		/*
+		 * for (int i = 0 ; i<numOFUsers ; i++) { User u = new User(i, "agent"+i);
+		 * agents.add(u); }
+		 */
 //			Process p = new ProcessBuilder("myCommand", "myArg").start();
 //			
 //			
-//			ProcessBuilder pb = new ProcessBuilder("myshellScript.sh", "myArg1", "myArg2");
-//			 Map<String, String> env = pb.environment();
-//			 env.put("VAR1", "myValue");
-//			 env.remove("OTHERVAR");
-//			 env.put("VAR2", env.get("VAR1") + "suffix");
-//			 pb.directory(new File("myDir"));
-//			 Process p = pb.start();
-//			 
-			
-			String ShCommand = "sh "+Constants.agentScriptfile;
+		/*
+			ProcessBuilder pb = new ProcessBuilder(Constants.agentScriptfile, "myArg1", "myArg2");
+			 env = pb.environment();
+			 env.put("VAR1", "myValue");
+			 env.remove("OTHERVAR");
+			 env.put("VAR2", env.get("VAR1") + "suffix");
+			 //pb.directory(new File("myDir"));
+			 Process p = pb.start();
+
+
+		ProcessBuilder pb = new ProcessBuilder("agent.sh", "2", "hello");
+		pb.directory(Constants.agentScriptfile);
+		Process proc = pb.start();
+		*/	
+		//https://stackoverflow.com/questions/11198678/processbuilder-environment-variable-in-java
+		//sudo apt install --reinstall coreutils for chmod on file/folders
+		
+		//write deployments using json:
+		int i = 0;
+		for (i = 0 ; i<numOFUsers ; i++) { 
+			User u = new User(i, "agent"+i);
+			agents.add(u); 
+			creatYaml(i);
+		
+		
+		try {
+			//while true; do curl -s https://some.site.com/someImage.jpg > /dev/null & echo blah ; done
+	
+				String ShCommand = "bash /home/spring/Documents/Testbed/src/agent.sh "+ numOFUsers+ " hello";
 			    Process p = Runtime.getRuntime().exec(ShCommand);
 			    p.waitFor();
-
+			    
+			    	
+			    
 			    BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			    BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-
+			    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			    bw.write("2012");
+			    
 			    String line = "";
+			    
 			    while ((line = reader.readLine()) != null) {
 			        System.out.println(line);
 			    }
@@ -94,10 +131,64 @@ public class Example_scenario1 {
 			    while ((line = errorReader.readLine()) != null) {
 			        System.out.println(line);
 			    }
-			}
-		
+			
+			    } catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+		}
+
 	}
 	
+	private static void creatYaml(int i) {
+		// TODO Auto-generated method stub
+		
+		//File file = new File("src/main/resources/application.yaml");
+        //ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        //ApplicationConfig config = objectMapper.readValue(file, ApplicationConfig.class);
+        //System.out.println("Application config info " + config.toString());
+        
+        PodDefinition podConfig = new PodDefinition();
+        podConfig.setPodname("agent"+i);
+        podConfig.setAppname("agent"+i); 
+        podConfig.setNumReplica(1); 
+        podConfig.setMyregistrykey("my-registry-key") ;
+        podConfig.setContainerName("agent"+i);
+        podConfig.setImageName("zeinabne/edge-testbed:pub");
+        podConfig.setContainerPort(8080+i);
+        
+        PodServiceDef srvConfig = new PodServiceDef();
+        srvConfig.setSrvname("agent"+i+"-service");
+        srvConfig.setAppname("agent"+i);
+        srvConfig.setPort(8083);
+        srvConfig.setTargetPort(8080+i);
+        srvConfig.setNodePort(30000+i);
+        //srvConfig.setUsername("appuser");
+        //srvConfig.setPassword("apppassword");
+        
+       
+        try {
+        	
+        	//ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+            //objectMapper.writeValue(new File("/home/spring/Documents/Testbed/src/deployments/application1.yaml"), podConfig.toString());
+            //objectMapper.writeValueAsString(new File("src/main/resources/application1.yaml"), srvConfig);
+        	
+            
+            File file = new File("/home/spring/Documents/Testbed/src/deployments/deployment"+i+".yaml");
+            FileWriter fr = null;
+
+		    fr = new FileWriter(file);
+		    fr.write(podConfig.toString());
+		    fr.write(srvConfig.toString());            
+		    fr.close();
+                    
+        } 
+        catch (IOException e) {
+                e.printStackTrace();
+        }
+
+	}
+
 	//read mobility files in the Mobility_Dataset directory:
 	public static void read_mobility(){
 		System.out.println("Reading mobility dataset...");

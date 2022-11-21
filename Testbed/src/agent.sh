@@ -1,7 +1,12 @@
 #!/bin/bash
-echo "bash started"
-java Client ip_address
-echo "bash finished"
-echo "hola"
-mkdir stackOverflow
-echo "bash finished"
+echo "creating agents"
+echo "command: $0"
+echo "First arg: $1"
+echo "Second arg: $2"
+j="1"
+for (( i=1 ; i<=$1 ; i++ ))
+do
+	cd /home/spring/Documents/Testbed/src/deployments
+	cat deployment${j}.yaml
+	echo $i;
+done

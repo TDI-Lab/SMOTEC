@@ -1,4 +1,4 @@
-package V2I;
+package pubsub;
 
 import java.io.File;
 
@@ -10,11 +10,8 @@ public class Constants {
 	public static int MAX_Y;//8700,
 	public static int MIN_X;//493,
 	public static int MIN_Y;//2060,
+	public static int AP_COVERAGE;
 	public static int numEdgeNodes;
-	public static int numAgents;
-	public static int Edge_COVERAGE;
-	public static int CLOUDLET_COVERAGE;
-	//public static String mobilitypath = "C:\\Users\\znb_n\\eclipse-workspace\\EdgeTestbed\\mobility";
 	
 	public static final int ADD = 0;
 	public static final int REMOVE = 1;
@@ -28,8 +25,6 @@ public class Constants {
 	public static double FOG_DEVICE_COST_PER_MEMORY = 0.05;
 	public static double FOG_DEVICE_COST_PER_STORAGE = 0.001;
 	public static double FOG_DEVICE_COST_PER_BW = 0.0;
-	public static String cityconfigfile = "/home/spring/Documents/Testbed/src/CityConfig.txt";
-	public static File agentScriptfile = new File("/home/spring/Documents/Testbed/src");
-	//cityconfigfile = "/home/zeinab/input/CityConfig.json";
+	
 	
 }
