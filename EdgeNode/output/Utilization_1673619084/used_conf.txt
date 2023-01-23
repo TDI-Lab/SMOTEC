@@ -1,0 +1,1044 @@
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: ReorganizationLogger, GlobalComplexCostLogger, GlobalCostLogger, SelectedPlanLogger, WeightsLogger, LocalCostMultiObjectiveLogger, GlobalResponseVectorLogger, TerminationLogger, UnfairnessLogger, PlanFrequencyLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, SelectedPlanLogger, ReorganizationLogger, WeightsLogger, PlanFrequencyLogger, GlobalResponseVectorLogger, TerminationLogger, GlobalComplexCostLogger, GlobalCostLogger, LocalCostMultiObjectiveLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, PlanFrequencyLogger, GlobalCostLogger, TerminationLogger, GlobalResponseVectorLogger, GlobalComplexCostLogger, SelectedPlanLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, WeightsLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: SelectedPlanLogger, UnfairnessLogger, LocalCostMultiObjectiveLogger, GlobalCostLogger, GlobalComplexCostLogger, GlobalResponseVectorLogger, ReorganizationLogger, WeightsLogger, PlanFrequencyLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: TerminationLogger, GlobalCostLogger, PlanFrequencyLogger, LocalCostMultiObjectiveLogger, ReorganizationLogger, GlobalResponseVectorLogger, GlobalComplexCostLogger, UnfairnessLogger, SelectedPlanLogger, WeightsLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, GlobalCostLogger, TerminationLogger, GlobalResponseVectorLogger, WeightsLogger, LocalCostMultiObjectiveLogger, PlanFrequencyLogger, SelectedPlanLogger, GlobalComplexCostLogger, ReorganizationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: ReorganizationLogger, PlanFrequencyLogger, WeightsLogger, UnfairnessLogger, TerminationLogger, LocalCostMultiObjectiveLogger, GlobalCostLogger, SelectedPlanLogger, GlobalResponseVectorLogger, GlobalComplexCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: PlanFrequencyLogger, GlobalResponseVectorLogger, UnfairnessLogger, WeightsLogger, GlobalComplexCostLogger, ReorganizationLogger, SelectedPlanLogger, GlobalCostLogger, TerminationLogger, LocalCostMultiObjectiveLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, GlobalCostLogger, PlanFrequencyLogger, TerminationLogger, GlobalResponseVectorLogger, WeightsLogger, SelectedPlanLogger, LocalCostMultiObjectiveLogger, GlobalComplexCostLogger, ReorganizationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: WeightsLogger, UnfairnessLogger, GlobalComplexCostLogger, TerminationLogger, PlanFrequencyLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, GlobalResponseVectorLogger, SelectedPlanLogger, GlobalCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: PlanFrequencyLogger, GlobalResponseVectorLogger, WeightsLogger, GlobalComplexCostLogger, LocalCostMultiObjectiveLogger, GlobalCostLogger, SelectedPlanLogger, UnfairnessLogger, ReorganizationLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, ReorganizationLogger, SelectedPlanLogger, TerminationLogger, GlobalCostLogger, PlanFrequencyLogger, GlobalComplexCostLogger, WeightsLogger, LocalCostMultiObjectiveLogger, GlobalResponseVectorLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalCostLogger, ReorganizationLogger, GlobalComplexCostLogger, UnfairnessLogger, LocalCostMultiObjectiveLogger, SelectedPlanLogger, TerminationLogger, WeightsLogger, PlanFrequencyLogger, GlobalResponseVectorLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalResponseVectorLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, GlobalCostLogger, WeightsLogger, SelectedPlanLogger, UnfairnessLogger, TerminationLogger, PlanFrequencyLogger, GlobalComplexCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalCostLogger, LocalCostMultiObjectiveLogger, TerminationLogger, PlanFrequencyLogger, ReorganizationLogger, GlobalComplexCostLogger, UnfairnessLogger, SelectedPlanLogger, GlobalResponseVectorLogger, WeightsLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: TerminationLogger, PlanFrequencyLogger, GlobalResponseVectorLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, WeightsLogger, SelectedPlanLogger, GlobalComplexCostLogger, UnfairnessLogger, GlobalCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: WeightsLogger, TerminationLogger, UnfairnessLogger, GlobalComplexCostLogger, GlobalCostLogger, GlobalResponseVectorLogger, PlanFrequencyLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, SelectedPlanLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalCostLogger, UnfairnessLogger, GlobalResponseVectorLogger, PlanFrequencyLogger, GlobalComplexCostLogger, WeightsLogger, SelectedPlanLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: PlanFrequencyLogger, UnfairnessLogger, TerminationLogger, ReorganizationLogger, WeightsLogger, LocalCostMultiObjectiveLogger, SelectedPlanLogger, GlobalComplexCostLogger, GlobalResponseVectorLogger, GlobalCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, ReorganizationLogger, GlobalComplexCostLogger, LocalCostMultiObjectiveLogger, TerminationLogger, SelectedPlanLogger, GlobalCostLogger, PlanFrequencyLogger, WeightsLogger, GlobalResponseVectorLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: SelectedPlanLogger, LocalCostMultiObjectiveLogger, GlobalCostLogger, WeightsLogger, ReorganizationLogger, GlobalResponseVectorLogger, PlanFrequencyLogger, UnfairnessLogger, TerminationLogger, GlobalComplexCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: ReorganizationLogger, WeightsLogger, GlobalComplexCostLogger, SelectedPlanLogger, GlobalResponseVectorLogger, GlobalCostLogger, LocalCostMultiObjectiveLogger, UnfairnessLogger, PlanFrequencyLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalComplexCostLogger, UnfairnessLogger, PlanFrequencyLogger, SelectedPlanLogger, GlobalResponseVectorLogger, GlobalCostLogger, LocalCostMultiObjectiveLogger, WeightsLogger, ReorganizationLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: ReorganizationLogger, GlobalResponseVectorLogger, GlobalCostLogger, LocalCostMultiObjectiveLogger, PlanFrequencyLogger, WeightsLogger, SelectedPlanLogger, UnfairnessLogger, TerminationLogger, GlobalComplexCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, GlobalCostLogger, GlobalResponseVectorLogger, PlanFrequencyLogger, GlobalComplexCostLogger, TerminationLogger, WeightsLogger, SelectedPlanLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalResponseVectorLogger, UnfairnessLogger, PlanFrequencyLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, WeightsLogger, SelectedPlanLogger, GlobalComplexCostLogger, TerminationLogger, GlobalCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalResponseVectorLogger, SelectedPlanLogger, GlobalComplexCostLogger, GlobalCostLogger, LocalCostMultiObjectiveLogger, UnfairnessLogger, PlanFrequencyLogger, TerminationLogger, WeightsLogger, ReorganizationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: SelectedPlanLogger, LocalCostMultiObjectiveLogger, WeightsLogger, TerminationLogger, GlobalCostLogger, GlobalComplexCostLogger, ReorganizationLogger, PlanFrequencyLogger, GlobalResponseVectorLogger, UnfairnessLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: UnfairnessLogger, WeightsLogger, PlanFrequencyLogger, GlobalResponseVectorLogger, SelectedPlanLogger, TerminationLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, GlobalCostLogger, GlobalComplexCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: LocalCostMultiObjectiveLogger, GlobalResponseVectorLogger, PlanFrequencyLogger, GlobalComplexCostLogger, TerminationLogger, UnfairnessLogger, SelectedPlanLogger, WeightsLogger, ReorganizationLogger, GlobalCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalComplexCostLogger, UnfairnessLogger, WeightsLogger, PlanFrequencyLogger, GlobalResponseVectorLogger, SelectedPlanLogger, TerminationLogger, GlobalCostLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: ReorganizationLogger, LocalCostMultiObjectiveLogger, SelectedPlanLogger, GlobalCostLogger, GlobalComplexCostLogger, UnfairnessLogger, WeightsLogger, PlanFrequencyLogger, GlobalResponseVectorLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalCostLogger, SelectedPlanLogger, GlobalComplexCostLogger, GlobalResponseVectorLogger, UnfairnessLogger, ReorganizationLogger, WeightsLogger, PlanFrequencyLogger, LocalCostMultiObjectiveLogger, TerminationLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: WeightsLogger, UnfairnessLogger, SelectedPlanLogger, GlobalComplexCostLogger, GlobalCostLogger, GlobalResponseVectorLogger, TerminationLogger, PlanFrequencyLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalCostLogger, TerminationLogger, WeightsLogger, SelectedPlanLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, PlanFrequencyLogger, UnfairnessLogger, GlobalResponseVectorLogger, GlobalComplexCostLogger
+CONFIGURATION:
+dataset = Utilization
+output = C:\Users\znb_n\eclipse-workspace\EdgeNode\output\Utilization_1673619084
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 2
+planDim = 6
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: GlobalCostLogger, GlobalComplexCostLogger, SelectedPlanLogger, UnfairnessLogger, TerminationLogger, PlanFrequencyLogger, WeightsLogger, ReorganizationLogger, LocalCostMultiObjectiveLogger, GlobalResponseVectorLogger

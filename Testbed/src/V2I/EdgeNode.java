@@ -18,10 +18,8 @@ import java.util.Set;
 
 public class EdgeNode {
 
-
+		public String name;
 		protected List<String> activeApplications;
-		EdgeNodeCharacteristics ENCharacteristics;
-		protected Map<String, Application> applicationMap;
 		
 		protected double uplinkBandwidth;
 		protected double downlinkBandwidth;
@@ -31,27 +29,28 @@ public class EdgeNode {
 		protected double totalCost;
 
 		
-		protected Coordinate coord;
 		protected Set<User> connectedSmartThings;
 		protected Set<User> smartThingsWithVm;
 		protected boolean available;
 		
 		protected int myId;
 
-				
-		public EdgeNode(String name, double storage,	double schedulingInterval, double uplinkBandwidth, double downlinkBandwidth,
-			double uplinkLatency, double ratePerMips, int coordX, int coordY, int id, Service service)
+		public EdgeNode(int id, String name) {
+			this.setMyId(id);
+			this.setName(name);
+			
+		}
+		private void setName(String name2) {
+			// TODO Auto-generated method stub
+			name = name2;
+		}
+		public EdgeNode(String name, double storage, double schedulingInterval, double uplinkBandwidth, double downlinkBandwidth,
+			double uplinkLatency, double ratePerMips, int coordX, int coordY, int id)
 		{
 
-			this.coord = new Coordinate();
-			this.setCoord(coordX, coordY);
 			this.setMyId(id);
-			smartThings = new HashSet<>();
 			smartThingsWithVm = new HashSet<>();
 			this.setAvailable(true);
-			this.setService(service);
-
-			setStorageList(storageList);
 			setUplinkBandwidth(uplinkBandwidth);
 			setDownlinkBandwidth(downlinkBandwidth);
 			setUplinkLatency(uplinkLatency);
@@ -59,10 +58,7 @@ public class EdgeNode {
 			
 			setActiveApplications(new ArrayList<String>());
 			
-			applicationMap = new HashMap<String, Application>();
-			
 			this.energyConsumption = 0;
-			this.lastUtilization = 0;
 			setTotalCost(0);
 			String arch = Constants.FOG_DEVICE_ARCH;
 			String os = Constants.FOG_DEVICE_OS;
@@ -73,26 +69,11 @@ public class EdgeNode {
 			double costPerStorage = Constants.FOG_DEVICE_COST_PER_STORAGE;
 			double costPerBw = Constants.FOG_DEVICE_COST_PER_BW;
 
-			EdgeNodeCharacteristics characteristics = new EdgeNodeCharacteristics(
-				arch, os, vmm, host, time_zone, cost, costPerMem, costPerStorage, costPerBw);
-
-			setCharacteristics(characteristics);
-
-		}
-
-		
 			
-
-		
-		private void setCharacteristics(EdgeNodeCharacteristics characteristics) {
-			// TODO Auto-generated method stub
-			ENCharacteristics = characteristics;
 		}
 
-
-
-
-
+		
+		
 		public int getMyId() {
 			return myId;
 		}
@@ -123,98 +104,7 @@ public class EdgeNode {
 			}
 		}
 
-		public Coordinate getCoord() {
-			return coord;
-		}
-
-		public void setCoord(int coordX, int coordY) {
-			this.coord.setCoordX(coordX);
-			this.coord.setCoordY(coordY);
-		}
-
-		
-
-		private void desconnectServerCloudletSmartThing(SimEvent ev) {
-			User smartThing = (User) ev.getData();
-			desconnectServerCloudletSmartThing(smartThing);
-			
-		}
-
-		private void connectServerCloudletSmartThing(SimEvent ev) {
-			User smartThing = (User) ev.getData();
-			connectServerCloudletSmartThing(smartThing);
-			if (smartThing.getTimeFinishDeliveryVm() == -1) {
-			}
-			else {
-				
-				}
-			if (!smartThing.getSourceServerCloudlet().equals(smartThing.getVmLocalServerCloudlet())) {
-				smartThing.getSourceServerCloudlet().desconnectServerCloudletSmartThing(smartThing);
-				smartThing.getVmLocalServerCloudlet().connectServerCloudletSmartThing(smartThing);
-				
-			}
-		}
-
-		
-
-		public boolean connectServerCloudletSmartThing(User st) {
-
-			st.setSourceServerCloudlet(this);
-
-			setSmartThings(st, Constants.ADD);
-			double latency = st.getUplinkLatency();
-
-			setUplinkLatency(getUplinkLatency() + 0.123812950236);//
-			
-			return true;
-		}
-
-		public boolean desconnectServerCloudletSmartThing(MobileDevice st) {
-			setSmartThings(st, Policies.REMOVE); // it'll remove the smartThing from serverCloudlets-smartThing's set
-			st.setSourceServerCloudlet(null);
-			// NetworkTopology.addLink(this.getId(), st.getId(), 0.0, 0.0);
-			setUplinkLatency(getUplinkLatency() - 0.123812950236);
-			removeChild(st.getId());
-			return true;
-
-		}
-
-		
-	
-		protected void updateActiveApplications(SimEvent ev) {
-			Application app = (Application) ev.getData();
-			if (!getActiveApplications().contains(app.getAppId()))
-				getActiveApplications().add(app.getAppId());
-			System.out.println(" Apps " + getActiveApplications());
-		}
-
-		
-		protected void updateAllocatedMips(String incomingOperator) {
-		
-		}
-
-		private void updateEnergyConsumption() {
-			double totalMipsAllocated = 0;
-			for (final Vm vm : getHost().getVmList()) {
-				totalMipsAllocated += getHost().getTotalAllocatedMipsForVm(vm);
-			}
-
-			double timeNow = CloudSim.clock();
-			double currentEnergyConsumption = getEnergyConsumption();
-			double newEnergyConsumption = currentEnergyConsumption + (timeNow - lastUtilizationUpdateTime)
-				* getHost().getPowerModel().getPower(lastUtilization);
-			setEnergyConsumption(newEnergyConsumption);
-			double currentCost = getTotalCost();
-			double newcost = currentCost + (timeNow - lastUtilizationUpdateTime) * getRatePerMips()
-				* lastUtilization * getHost().getTotalMips();
-			setTotalCost(newcost);
-
-			lastUtilization = Math.min(1, totalMipsAllocated / getHost().getTotalMips());
-			lastUtilizationUpdateTime = timeNow;
-		}
-
-		
-		public double getUplinkBandwidth() {
+				public double getUplinkBandwidth() {
 			return uplinkBandwidth;
 		}
 
@@ -241,17 +131,6 @@ public class EdgeNode {
 		}
 
 		
-
-		public Map<String, Application> getApplicationMap() {
-			return applicationMap;
-		}
-
-		public void setApplicationMap(Map<String, Application> applicationMap) {
-			this.applicationMap = applicationMap;
-		}
-
-		
-
 		public double getDownlinkBandwidth() {
 			return downlinkBandwidth;
 		}
@@ -285,31 +164,6 @@ public class EdgeNode {
 			this.totalCost = totalCost;
 		}
 
-		public Set<EdgeNode> getServerCloudlets() {
-			return serverCloudlets;
-		}
-
-		public void setServerCloudlets(EdgeNode sc, int action) {// myiFogSim
-			if (action == Constants.ADD) {
-				this.serverCloudlets.add(sc);
-			}
-			else {
-				this.serverCloudlets.remove(sc);
-			}
-		}
-
-		public Set<User> getSmartThingsWithVm() {
-			return smartThingsWithVm;
-		}
-
-		public void setSmartThingsWithVm(User st, int action) {// myiFogSim
-			if (action == Constants.ADD) {
-				this.smartThingsWithVm.add(st);
-			}
-			else {
-				this.smartThingsWithVm.remove(st);
-			}
-		}
-
+		
 		
 	}

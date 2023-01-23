@@ -7,8 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/spring/Documents/Testbed/src/jar/IEPOS-Tutorial.jar"/>
-	<classpathentry kind="lib" path="/home/spring/Documents/Testbed/src/jar/jackson-dataformat-yaml-2.9.2.jar"/>
-	<classpathentry kind="lib" path="/home/spring/Documents/Testbed/src/jar/jackson-core-2.9.2.jar"/>
-	<classpathentry kind="lib" path="/home/spring/Documents/Testbed/src/jar/snakeyaml-1.18.jar"/>
+	<classpathentry kind="lib" path="/home/spring/Documents/Testbed/src/jar/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

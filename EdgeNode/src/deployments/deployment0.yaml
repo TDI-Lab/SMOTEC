@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: srv0
+  labels: 
+    app: srv0
+spec:
+  replicas: 1
+  selctor:
+    matchLabels:
+      app: srv0
+  template:
+    metadata:
+      labels:
+        app: srv0
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: srv0
+        image: zeinabne/edge-testbed:pub
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadate:
+  name: srv0-service
+spec:
+  selector:
+    app: srv0
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+    port: 8083
+    targetPort: 8080
+    nodePort: 30000

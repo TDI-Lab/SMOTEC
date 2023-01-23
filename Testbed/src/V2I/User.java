@@ -22,59 +22,43 @@ public class User {
 
 		private int direction; // NONE, NORTH, SOUTH, ...
 		private int speed; // in m/s
-		protected Coordinate coord;
-		protected Coordinate futureCoord;// = new Coordinate();//myiFogSim
 		private EdgeNode sourceServerCloudlet;
 		private EdgeNode hostServerCloudlet;
 		protected ArrayList<String[]> path;
 		
-		private Service container;
 		private double containerSize;
 		
 		protected int startTravelTime;
 		protected int travelTimeId;
 		private boolean status;
+		private int cpu;
+		private int memory;
 		
-		public User(int id, String name) {
-			setId(id);
+		public int getCpu() {
+			return cpu;
+		}
+
+		public void setCpu(int cpu) {
+			this.cpu = cpu;
+		}
+
+		public int getMemory() {
+			return memory;
+		}
+
+		public void setMemory(int memory) {
+			this.memory = memory;
+		}
+
+		public User(String name, int agid) {
+			setId(agid);
 			setName(name);
 			setPath(new ArrayList<String[]>());
 		}
 		
-		public User(String name, Coordinate coord, int coordX, int coordY, int id) {
-			// TODO Auto-generated constructor stub
-			setId(id);
-			setStatus(true);
-			setDirection(0);
-			setSpeed(0);
-			setSourceServerCloudlet(null);
-			//setVmMobileDevice(null);
-			
-			this.futureCoord = new Coordinate();
-			setFutureCoord(-1, -1);
+		
 
-		}
-
-		public User(String name, int coordX, int coordY, int id, int dir, int sp) {
-
-			setDirection(dir);
-			setSpeed(sp);
-			setSourceServerCloudlet(null);
-			setStatus(true);
-			this.futureCoord = new Coordinate();
-			setFutureCoord(-1, -1);
-
-
-		}
-
-
-
-		@Override
-		public String toString() {
-			return this.getName() + "[coordX=" + this.getCoord().getCoordX() + ", coordY="
-				+ this.getCoord().getCoordY() + ", direction=" + direction + ", speed=" + speed
-				+ ", sourceCloudletServer=" + sourceServerCloudlet +"]";
-		}
+		
 
 		public String getName() {
 			return name;
@@ -120,18 +104,7 @@ public class User {
 		public void setTravelTimeId(int travelTimeId) {
 			this.travelTimeId = travelTimeId;
 		}
-		public Coordinate getFutureCoord() {// myiFogSim
-			return futureCoord;
-		}
-
-		public void setFutureCoord(int coordX, int coordY) {
-			this.futureCoord.setCoordX(coordX);
-			this.futureCoord.setCoordY(coordY);
-		}
-		public Coordinate getCoord() {
-			return coord;
-		}
-
+		
 		public EdgeNode getSourceServerCloudlet() {
 			return sourceServerCloudlet;
 		}
@@ -149,20 +122,13 @@ public class User {
 			this.status = status;
 		}
 
-		
-
-		public void setCoord(int coordX, int coordY) {
-			this.coord.setCoordX(coordX);
-			this.coord.setCoordY(coordY);
-		}
-
 		public void setId(int id) {
 			this.id = id;
 		}
 		
-		public int getMyId() {
+		public int getId() {
 			// TODO Auto-generated method stub
-			return 0;
+			return id;
 		}
 		public EdgeNode getHostServerCloudlet() {
 			return hostServerCloudlet;
@@ -172,14 +138,7 @@ public class User {
 			this.hostServerCloudlet = hostServerCloudlet;
 		}
 
-		public Service getContainer() {
-			return container;
-		}
-
-		public void setContainer(Service container) {
-			this.container = container;
-		}
-
+		
 		public double getContainerSize() {
 			return containerSize;
 		}
@@ -189,13 +148,7 @@ public class User {
 		}
 
 		
-		public void setCoord(Coordinate coord) {
-			this.coord = coord;
-		}
-
-		public void setFutureCoord(Coordinate futureCoord) {
-			this.futureCoord = futureCoord;
-		}
+		
 
 		
 

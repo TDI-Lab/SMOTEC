@@ -1,0 +1,12 @@
+[{
+"max_x":15577,
+"min_x":13409,
+"max_y":15725,
+"min_y":14284,
+"edge_nodes":3,
+"AP_COVERAGE":1000,
+"numAgents":5,
+"AgentId":[10000,10001,10002,10003,10004],
+"CPUResourceDemand":[500,512,300,200,100],
+"MemResourceDemand":[386,504,510,400,600]
+}]
