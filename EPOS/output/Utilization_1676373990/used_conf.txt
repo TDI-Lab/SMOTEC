@@ -1,0 +1,29 @@
+CONFIGURATION:
+dataset = Utilization
+output = /home/master/Documents/lastUpdate-0mq/EPOS/output/Utilization_1676373990
+==============
+numSimulations = 2
+dataset = Utilization
+numAgents = 3
+numPlans = 4
+planDim = 4
+numIterations = 3
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0.0
+global cost function = variance
+local cost function = score as a cost plan cost function.
+goal signal = null
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: ReorganizationLogger, UnfairnessLogger, TerminationLogger, GlobalCostLogger, GlobalResponseVectorLogger, SelectedPlanLogger, PlanFrequencyLogger, LocalCostMultiObjectiveLogger, GlobalComplexCostLogger, WeightsLogger

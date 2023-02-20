@@ -4,7 +4,7 @@ public class EdgeNode {
 	
 	protected Coordinate coord;
 	
-	int id;
+	public int id;
 	
 	public EdgeNode(int i, int Coor1, int Coor2) {
 		id = i;

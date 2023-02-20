@@ -7,13 +7,9 @@ import java.util.List;
 public class Distance {
 
 	public Distance() {
-		// TODO Auto-generated constructor stub
+	
 	}
 
-	/**
-	 * @param args
-	 * @author Marcio Moraes Lopes
-	 */
 	private static int coordX;
 	private static int coordY;
 	private static double first;
@@ -21,45 +17,21 @@ public class Distance {
 	private static double distance;
 	
 
-	//verify what return type is better (int or ApDevice)
-	public static int theClosestAp(List<EdgeNode> apDevices, Vehicle smartThing) {
-		int choose = apDevices.get(0).getMyId();
-		// the first Ap
-		double min = checkDistance(apDevices.get(0).getCoord(), smartThing.getCoord());
-		double dis;
-		for (EdgeNode en : apDevices) {
-				dis = checkDistance(en.getCoord(), smartThing.getCoord());
-				
-				if (dis < min) {
-					choose = en.getMyId();
-					min = dis;
-				}
-			
-		}
+	
+	public static int closestEdgeAgents(List<EdgeNode> edgeAgents, Vehicle veh, int[] closEgAg) {
 
-		if (min <= Constants.AP_COVERAGE)// the user should be inside Access Point coverage 
-			return choose;// id
-		else {
-			System.out.println("Out of coverage range of all APs");
-			return -1;// flag error
-		}
-	}
-
-	public static int nextClosestAp(List<EdgeNode> apDevices, Vehicle smartThing, int[] closAP) {
-
-		int first, second, third;
 		double min = Integer.MAX_VALUE;
 		double firstmin = min;
         double secmin = min;
         double thirdmin = min;
+        
         //int[] closAP = new int[]{0,0,0};
 		double dis;
-		for (EdgeNode en : apDevices) {
-			 /* Check if current element is less than
-            firstmin, then update first, second and
-            third */
-            dis = checkDistance(en.getCoord(), smartThing.getCoord());
-            if (dis <Constants.AP_COVERAGE) {
+		for (int i =0; i<edgeAgents.size(); i++) {
+			 dis = calDistance(edgeAgents.get(i).getCoord(), veh.getCoord());
+			 //System.out.println("i "+i+" dis "+dis);
+	            
+			 if (dis < Constants.AP_COVERAGE) {
             	
 	          
 				if (dis < firstmin)
@@ -67,9 +39,9 @@ public class Distance {
 					thirdmin = secmin;
 	                secmin = firstmin;
 	                firstmin = dis;
-	                closAP[2] = closAP[1];
-	                closAP[1] = closAP[0];
-	                closAP[0] = en.getMyId();
+	                closEgAg[2] = closEgAg[1];
+	                closEgAg[1] = closEgAg[0];
+	                closEgAg[0] = edgeAgents.get(i).getMyId();
 	                
 	            }
 				
@@ -79,8 +51,8 @@ public class Distance {
 	            {
 	                thirdmin = secmin;
 	                secmin = dis;
-	                closAP[2] = closAP[1];
-	                closAP[1] = en.getMyId();
+	                closEgAg[2] = closEgAg[1];
+	                closEgAg[1] = edgeAgents.get(i).getMyId();
 	                
 	            }
 				
@@ -88,21 +60,21 @@ public class Distance {
 	            then update third */
 	            else if (dis < thirdmin) {
 	                thirdmin = dis;
-					closAP[2] = en.getMyId();
+					closEgAg[2] = edgeAgents.get(i).getMyId();
 	            
 	            }
 	         }	
 		}
 		
-       // System.out.println("First min = " + firstmin + ",id "+ closAP[0]);
-       // System.out.println("Second min = " + secmin + ",id "+ closAP[1]);
+        //System.out.println("First min = " + firstmin + ",id "+ closAP[0]);
+        //System.out.println("Second min = " + secmin + ",id "+ closAP[1]);
        // System.out.println("Third min = " + thirdmin + ",id "+closAP[2]);
 		
-		if(closAP[0] == -1)
+		if(closEgAg[0] == -1)
 			return 0;
-		else if(closAP[1] == -1)
+		else if(closEgAg[1] == -1)
 			return 1;
-		else if(closAP[2] == -1)
+		else if(closEgAg[2] == -1)
 			return 2;
 		return 3;
 	
@@ -110,8 +82,12 @@ public class Distance {
 	}
 
 	
-	public static double checkDistance(Coordinate firstCoord, Coordinate secondCoord) {
-		//Distance between two points formula
+	/**
+	 * @param firstCoord
+	 * @param secondCoord
+	 * @return the distance between two points
+	 */
+	public static double calDistance(Coordinate firstCoord, Coordinate secondCoord) {
 		setFirst((double) Math.pow(firstCoord.getCoordX() - secondCoord.getCoordX(), 2));
 		setSecond((double) Math.pow(firstCoord.getCoordY() - secondCoord.getCoordY(), 2));
 		setDistance(Math.sqrt(getFirst() + getSecond()));

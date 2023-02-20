@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: agent10005
+  labels: 
+    app: agent10005
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent10005
+  template:
+    metadata:
+      labels:
+        app: agent10005
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: agent10005
+        image: zeinabne/edge-testbed:agents
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8095
+        args: ["10005"]
+      nodeSelector:
+        nn: master
+---
+apiVersion: v1
+kind: Service
+metadate:
+  name: agent10005-service
+spec:
+  selector:
+    app: agent10005
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8095
+      targetPort: 8095
+      nodePort: 30015

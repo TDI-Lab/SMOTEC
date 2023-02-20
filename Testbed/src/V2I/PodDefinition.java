@@ -7,13 +7,22 @@ public class PodDefinition {
 	private String version = "apps/v1";
 	private String podname;
 	private String appname;
-	private int numReplica;
+	private int numReplica = 1;
 	private String registrykeyName;
 	private String containerName;
 	private String imageName;
 	private String imagePullPolicy = "Always";
 	private int containerPort;
+	private int id;
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getPodname() {
 		return podname;
 	}
@@ -109,7 +118,7 @@ public class PodDefinition {
 	                +"    app: " + appname + "\n"
 	                +"spec:\n" 
 	                +"  replicas: " + numReplica + "\n"
-	                +"  selctor:\n"
+	                +"  selector:\n"
 	                +"    matchLabels:\n"
 	                +"      app: " + appname + "\n"
 	                +"  template:\n"
@@ -124,7 +133,9 @@ public class PodDefinition {
 	                +"        image: " + imageName + "\n"
 	                +"        imagePullPolicy: " + imagePullPolicy+ "\n"
 	                +"        ports:\n"
-	                +"        - containerPort: " + containerPort ;
+	                +"        - containerPort: " + containerPort+ "\n"
+	    			+"        args: [\""+id+"\"]";
+	    		
 	                 
 	    }
 	}

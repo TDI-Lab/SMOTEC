@@ -5,7 +5,6 @@ import java.io.File;
 public class Constants {
 
 	
-	public static final short[][] VehiclesToAP = null;
 	public static int MAX_X;//6500 for test,
 	public static int MAX_Y;//8700,
 	public static int MIN_X;//493,
@@ -28,11 +27,12 @@ public class Constants {
 	public static double FOG_DEVICE_COST_PER_STORAGE = 0.001;
 	public static double FOG_DEVICE_COST_PER_BW = 0.0;
 	public static String cityconfigfile;
-	public static File agentScriptfile = new File("/home/spring/Documents/Testbed/src");
-	//cityconfigfile = "/home/zeinab/input/CityConfig.json";
-	public static String yamlPath = "/home/spring/Documents/Testbed/src/deployments/deployment";
-	public static String agentBash = "/home/spring/Documents/Testbed/src/agent.sh ";
-	public static String edgContainerInputFile;
-	public static String edgeBash = "/home/spring/Documents/Testbed/src/edge.sh ";
+	public static String filePath;
+	public static String yamlPath;
+	public static String agentBash;
+	public static String ContainerImagesPath;
+	public static String edgeBash;
+	public static String Secret;
+	
 	
 }

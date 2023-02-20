@@ -31,7 +31,7 @@ public class Map {
 		 */
 	    public static int[] initializeCity(String cityfile){
 	    	
-	    	int[] agId;
+	    	int[] agId = null;
 	    	JSONParser parser = new JSONParser();
 			
 		    try {
@@ -47,12 +47,15 @@ public class Map {
 		          Constants.numEdgeNodes = (int) (long) jsonObject.get("edge_nodes");
 	              Constants.numAgents = (int) (long) jsonObject.get("numAgents");
 	              Constants.Edge_COVERAGE =  (int) (long) jsonObject.get("AP_COVERAGE");
-	            
+	              Constants.Secret = (String) jsonObject.get("Secret");
+	              Constants.ContainerImagesPath = (String) jsonObject.get("ContainerImagesPath");// /tmp/nothing
+	      		
+	              
 	              agId = new int[Constants.numAgents];
 	              JSONArray jsonArray= (JSONArray) jsonObject.get("AgentId");
 		            
 		            for(int i=0; i<Constants.numAgents; i++){
-		            	agId[i] = (int) (long)(jsonArraycpu.get(i));
+		            	agId[i] = (int) (long)(jsonArray.get(i));
 		            	
 		            }
 		          System.out.println("Map is configured with "+Constants.numEdgeNodes+" edge devices");

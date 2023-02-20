@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: srv10004
+  labels: 
+    app: srv10004
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srv10004
+  template:
+    metadata:
+      labels:
+        app: srv10004
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: srv10004
+        image: zeinabne/edge-testbed:trafmonSRV
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 50m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        ports:
+        - containerPort: 8106
+        args: ["10004", "1"]
+---
+apiVersion: v1
+kind: Service
+metadate:
+  name: srv10004-service
+spec:
+  selector:
+    app: srv10004
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8110
+      targetPort: 8106
+      nodePort: 30036

@@ -28,65 +28,85 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Context;
+import org.zeromq.ZMQ.Socket;
 
 
 
 public class Agent {
-	private static List<EdgeNode> edgeDevices = new ArrayList<>();
-	private static String host;
-	private static final String brokerUrl ="tcp://localhost:1883";
+	private static List<EdgeNode> edgeAgents = new ArrayList<>();
+	private static String servicehost;
+	//private static String brokerUrl = "tcp://localhost:1883";
 	static MqttClient mqttClient;
-	static boolean win = true;
+	private static int time = 0;
+	private static int vehAgentInd;
+	static Context context = ZMQ.context(1);
 	
 	/**
-	 * @param args agent_id, CPU, memory, storage: 10000 250 300 400
+	 * @param args AgentId, CPU (mips), memory(MB), mobility_dir infrastructureFilePath: 10000 250 300 "/home/spring/Documents/Agent/src/Mobility_Dataset" "/home/spring/Documents/Agent/src/vehicle/infrastructure.json"
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("My agent id is: "+args[0]);
-		Constants.win = win;
-		Constants.initialize(win,Integer.parseInt(args[0]));
 		
-		read_infrastructure();
+		Constants.brokerUrl = "tcp://localhost:1883";
+		System.out.println("VehAgent "+args[0]+" just deployed and started.....");
+		Constants.conf = new File("").getAbsolutePath()+"/src/conf/TestbedConfig.json";
+		vehAgentInd = Integer.parseInt(args[0])-10000;
 		
-		Vehicle v = new Vehicle(args[0],args[1],args[2]);
+		Constants.filePath = new File("").getAbsolutePath();
+		Constants.mobDir = Constants.filePath+"/src/Mobility_Dataset/";
 		
-		read_mobility(v, args[3]);
+		read_infrastructure(Constants.conf, vehAgentInd);
 		
-		//mqttClient creation:
-		MemoryPersistence persistence = new MemoryPersistence();
-		String subscriberId = UUID.randomUUID().toString();
-		try {
-			mqttClient = new MqttClient(brokerUrl,subscriberId, persistence);
-	        MqttConnectOptions options = new MqttConnectOptions();
-	        options.setAutomaticReconnect(true);
-	        options.setCleanSession(true);
-	        options.setConnectionTimeout(0);//disable timeout
-	        mqttClient.connect(options);
-		}
-		catch (MqttException me) {
-			System.out.println(me);
-		}
-
-		int ConnectedEdge = -1;// = Distance.theClosestAp(edgeDevices, u);
+		
+		Vehicle v = new Vehicle(args[0]);
+		
+		read_mobility(v, Constants.mobDir);
+		
+		Client client = new Client(v, context);
+		
+		
+		String edgeServerAdd;String newEdgeServerAdd;
+		int ConnectedEdgeAgent = -1;// firstly agent is not connected to any access point
 		/** 
-		 * array to keep the three closest access points to this agent with its initial coordination
+		 * array to keep the three closest access points to which agent can connect in its initial coordination
 		 */
+		int numOfAP = 0;
 		int[] AP = new int[] {-1,-1,-1};
-		int numOfAP = Distance.nextClosestAp(edgeDevices, v, AP);
-		System.out.println("Closest ap ids: "+ AP[0]+", "+ AP[1]+", "+AP[2]);
+		numOfAP = Distance.closestEdgeAgents(edgeAgents, v, AP);
+		System.out.println("Closest EdgeAgent ids at time: "+v.getTravelTime()+" are: "+ AP[0]+", "+ AP[1]+", "+AP[2]);
+		
+		while (numOfAP == 0) {
+			Coordinate.newCoordinate(v);
+			AP = new int[] {-1,-1,-1};
+			numOfAP = Distance.closestEdgeAgents(edgeAgents, v, AP);
+			//System.out.println("Closest edgeAgent ids at time: "+v.getTravelTime()+" are: "+ AP[0]+", "+ AP[1]+", "+AP[2]);
+			
+			if (!v.isStatus()) {
+				System.out.println("Out of coverage of EdgeAgents");
+				//down
+				System.exit(0);
+							
+			}
+		}
+		
+		
 		int hostId = -1, i = 0;
-		System.out.println("num "+numOfAP);
+		
 		/**
-		 * keep sending connection requests to the AP until connect to an access point:
+		 * keep sending connection requests to the APs until connect to an access point:
 		 */
+		
 		while ((hostId == -1)&&(i<numOfAP)) {
-				ConnectedEdge = AP[i];	
-				if (ConnectedEdge != -1) {
+				ConnectedEdgeAgent = AP[i];	
+				if (ConnectedEdgeAgent != -1) {
 					try {
-						System.out.println("Agent "+v.getName()+" trying to connect to ap: "+ConnectedEdge);
-						hostId = ConnectToAP(ConnectedEdge, v);
+						System.out.println("VehAgent "+v.getName()+" trying to connect to edgeAgent: "+ConnectedEdgeAgent);
+						edgeServerAdd = "tcp://127.0.0.1:"+(5700+ConnectedEdgeAgent);
+						hostId = client.sendRequest(edgeServerAdd, ConnectedEdgeAgent, Constants.CONNREQ);
+					    //client.stop();
+					   //hostId = ConnectToEdgeAgent(ConnectedEdgeAgent, v);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -96,48 +116,82 @@ public class Agent {
 			if (i == numOfAP)//infinite loop until connect to an AP and receive a service host
 				i = 0;
 		}
-		
-		if(hostId != -1) {
-			v.setConnectedEdge(edgeDevices.get(ConnectedEdge));//set edge node
-			v.setHostServerCloudlet(edgeDevices.get(hostId));//set host node
+		 
+			      
+						
+		if(hostId != -1) {//get a host for its service
+			v.setConnectedEdge(edgeAgents.get(ConnectedEdgeAgent));//set edge node
+			v.setHostServerCloudlet(edgeAgents.get(hostId));//set host node
 			v.toString();
-			//start communication with hosted service
-			System.out.println("User "+v.getName()+" service is hosted on "+hostId);
+			System.out.println("VehicleAgent "+v.getName()+" connected to "+ConnectedEdgeAgent+" , its service is hosted on "+v.getHostNode().id);
 		}
 		
+		
+
+		//sleep until the container is up:
+		Thread.sleep(5000);
+		String traficDataPublisger = "tcp://localhost:"+v.getMyId();
+		Callable<Void> target = new asyncSubscriber(context, traficDataPublisger, hostId); 
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+              try {
+                  target.call();
+              }
+              catch(Exception ex) {
+                  throw new RuntimeException(ex);
+              }
+          }, 2, 2, TimeUnit.SECONDS);
+        
+        
+		
+		
+		//new Subscriber(traficDataPublisger, v.getHostServerCloudlet().id).run(null);
+		//new Subscriber(traficDataPublisger1, 1).run(null);
+		System.out.println("VehicleAgent connected to its service and receiving updates");
+		
+		 // System.exit(0);
 		/*
-		 * update agent location/edge node and migrate its service accordingly
+		 * update agent location/edge node and chech if its still in the coverage range of ap
 		 */
 		while(true) {
+			TimeUnit.SECONDS.sleep(1);
 			Coordinate.newCoordinate(v);
 			/*
 			 * the agent moves out of borders or its path list if ended
 			 */
-			if (!v.isStatus())
-				Coordinate.setInitialCoordinate(v);
-			//break;//coordinate.setInitialCoordinate(u);
-			double dis = Distance.checkDistance(v.getCoord(),v.getConnectedEdge().getCoord());
-			if (dis < (Constants.AP_COVERAGE-Constants.Handoff)) {
-				System.out.println("Agent "+v.getMyId()+" with distance "+dis+" still connected to ap."+v.getConnectedEdge().id);
-				//continue communication with service
+			if (!v.isStatus()) {
+				
+				break;//coordinate.setInitialCoordinate(u);
+				
 			}
-			else {//hand off from its connected access point
-				host = null;
-				System.out.println("Agent "+v.getMyId()+" with distance "+dis+ " disconnecting from ap."+v.getConnectedEdge().id+" ...");
+			double dis = Distance.calDistance(v.getCoord(),v.getConnectedEdge().getCoord());
+			//in coverage range:
+			if (dis < (Constants.AP_COVERAGE-Constants.Handoff)) {
+				System.out.println("VehicleAgent "+v.getMyId()+" with distance "+dis+" still connected to EdgeAgent "+v.getConnectedEdge().id);
+			}
+			//out of coverage range of its connected access point:
+			else {//hand off from its connected access point and try with next closest access point
+				//host = null;
+				System.out.println("VehAgent "+v.getMyId()+" with distance "+dis+ " disconnecting from EdgeAgent "+v.getConnectedEdge().id+" ...");
 				AP = new int[] {-1,-1,-1};
-				numOfAP = Distance.nextClosestAp(edgeDevices, v, AP);
-				System.out.println("Next closest ap ids: "+ AP[0]+", "+ AP[1]+", "+AP[2]);
-				hostId = -1;
+				numOfAP = Distance.closestEdgeAgents(edgeAgents, v, AP);
+				System.out.println("Next closest EdgeAgents ids: "+ AP[0]+", "+ AP[1]+", "+AP[2]);
+				
+				int connectedEdgeId = -1;
 				i = 0;
 				/**
-				 * keep sending connection requests to the AP until connect to an access point:
+				 * keep sending connection requests to the APs until connect to an access point:
 				 */
-				while ((hostId == -1)&&(i<numOfAP)) {
-						ConnectedEdge = AP[i];	
-						if (ConnectedEdge != -1) {
+				while ((connectedEdgeId == -1)&&(i<numOfAP)) {
+						ConnectedEdgeAgent = AP[i];	
+						if (ConnectedEdgeAgent != -1) {
 							try {
-								System.out.println("Agent "+v.getName()+" trying to connect to ap: "+ConnectedEdge);
-								hostId = ConnectToAP(ConnectedEdge, v);
+								System.out.println("VehicleAgent "+v.getName()+" trying to connect to EdgeAgent: "+ConnectedEdgeAgent);
+								
+								edgeServerAdd = "tcp://localhost:"+(5700+v.getConnectedEdge().id);
+								newEdgeServerAdd = "tcp://localhost:"+(5700+ConnectedEdgeAgent);
+								connectedEdgeId = client.handover(edgeServerAdd, newEdgeServerAdd, ConnectedEdgeAgent, v.getConnectedEdge().id, Constants.RECOREQ);
+							    
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -147,108 +201,36 @@ public class Agent {
 					if (i == numOfAP)//infinite loop until connect to an AP and receive a host
 						i = 0;
 				}
+				if (connectedEdgeId != -1)
+					System.out.println("Handover done successfully");
 				
-				v.setConnectedEdge(edgeDevices.get(ConnectedEdge));
-				v.setHostServerCloudlet(edgeDevices.get(hostId));
+				v.setConnectedEdge(edgeAgents.get(connectedEdgeId));
 				v.toString();
-				//start communication with service
-				System.out.println("User "+v.getName()+" service is hosted on "+hostId);
+				//System.out.println("VehicleAgent "+v.getName()+" connecting to traffic monitoring service hosted on "+hostId);
 				
 			}	
 			
 		}//end while
 		
 		
-		//System.out.println("Agent "+v.getMyId()+" service finished.");
+		//end of mobility profile: going down and shutting down
+		edgeServerAdd = "tcp://localhost:"+(5700+v.getConnectedEdge().id);
+		client.down(edgeServerAdd, v.getConnectedEdge().id, Constants.DOWNREQ);
 		
+		System.out.println("Agent "+v.getMyId()+" going out of the city.");
+		 client.stop();
 	}
 
-	/**
-	 * @param ap candidate ap to connect to: the access point in the coverage range
-	 * @param us vehicle
-	 * @return	selected host index for the vehicle service
-	 * the method sends connection request to ap, waits for ack and a host id from ap
-	 * @throws Exception
-	 */
-	private static int ConnectToAP(int ap, Vehicle us) throws Exception {
-		System.out.println("------------------------------------------------------------");
-		/*
-		 * subscribe for message with the topic ap:agent as the ack
-		 */
-		String ReqToAck = ap+":"+us.getName();
-		/*
-		 * send connection request with the topic: response-ap
-		 */
-		String ReqAck = "response-"+ap;
-		     
-		/*
-		 * wait on ack message reception
-		 */
-        CountDownLatch receivedSignal = new CountDownLatch(1);
-        System.out.println("First latch value: "+receivedSignal.getCount()+", waiting for ack: "+ReqToAck);
-        mqttClient.subscribe(ReqToAck, (topic, msg) -> {
-	            System.out.println("Connection request ack received: topic="+ ReqToAck+ " payload=" +new String(msg.getPayload())+", signal "+receivedSignal.getCount());
-                receivedSignal.countDown();
-	        });
-        
-        /*
-         * publish connection request messages
-         */
-        Callable<Void> target = new MqttPublisher(mqttClient, ap, us);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-	    try {
-	          target.call();
-	    }
-	    catch(Exception ex) {
-	          throw new RuntimeException(ex);
-	    }
-	  
-	        
-	    receivedSignal.await(30,TimeUnit.SECONDS);//await();//
-	    executor.shutdown();
-	     /*
-	      * if connected with the ap then wait for the selected host from the ap   
-	      */
-        if (receivedSignal.getCount() == 0) {
-        	System.out.println("Agent "+us.getName()+" received an ack and waiting for host allocation");
-        	/*
-        	 * Topic of host selection message: response-ap:agent 
-        	 * payload pf message contains host:hostId
-        	 */
-        	String ResTOPIC = "response-"+ap+":"+us.getMyId();
-			CountDownLatch receivedSignal1 = new CountDownLatch(1);
-	        mqttClient.subscribe(ResTOPIC, (topic, msg) -> {
-	            StringTokenizer st1 = new StringTokenizer(msg.toString(),":");
-	            System.out.println("Message received: topic= "+ ResTOPIC+ " payload= " +new String(msg.getPayload())+" signal "+receivedSignal.getCount());
-	            st1.nextToken();//first token "host"
-	            host = st1.nextToken();
-				System.out.println("second token/host: "+host);
-				receivedSignal1.countDown();
-		        });
-	        
-		    receivedSignal1.await(100, TimeUnit.SECONDS);
-		        
-	        }
-	        
-        if (host != null) {
-		        System.out.println("here I am, received the host: "+host);
-	        	return Integer.parseInt(host);
-	           
-        }
-        else { 
-	        	return -1;
-        }
-	}
 
 	/**
 	 * read json file infrastructure with the characteristics of network: area, #edges, edge locations/coverage
 	 */
-	private static void read_infrastructure() {
+	private static void read_infrastructure(String infraFile, int index) {
 		// TODO Auto-generated method stub
 		JSONParser parser = new JSONParser();
 		
 	    try {
-	        Object obj = parser.parse(new FileReader(Constants.infraFile));
+	        Object obj = parser.parse(new FileReader(infraFile));
 			
 	        JSONArray jsonObjects =  (JSONArray) obj;
 
@@ -260,17 +242,26 @@ public class Agent {
 	    		Constants.MIN_Y = (int) (long) jsonObject.get("min_y");
 	    		Constants.MAX_Y = (int) (long) jsonObject.get("max_y");
 	    		Constants.AP_COVERAGE = (int) (long) jsonObject.get("AP_COVERAGE");
-	            
 	            Constants.numEdgeNodes = (int) (long) jsonObject.get("edge_nodes");
-            
-                JSONArray jsonArrayX= (JSONArray) jsonObject.get("Xpoints");
+	            //Constants.brokerUrl = (String) (jsonObject.get("mosquittoBrokerUrl"));
+	            
+	            JSONArray jsonArraycpu= (JSONArray) jsonObject.get("CPUResourceDemand");
+	            Constants.cpu = (int) (long)(jsonArraycpu.get(index));
+	            		
+	            JSONArray jsonArraymem= (JSONArray) jsonObject.get("MemResourceDemand");
+	            Constants.mem = (int) (long)(jsonArraymem.get(index));
+	            
+	            JSONArray jsonArrayStor= (JSONArray) jsonObject.get("StoResourceDemand");
+	            Constants.storage = (int) (long)(jsonArrayStor.get(index));
+	            
+	            JSONArray jsonArrayX= (JSONArray) jsonObject.get("Xpoints");
 	            JSONArray jsonArrayY= (JSONArray) jsonObject.get("Ypoints");
 	            
 	            for(int i=0; i<jsonArrayY.size(); i++){
-	            	edgeDevices.add(i, new EdgeNode(i, (int) (long)(jsonArrayX.get(i)),(int) (long)(jsonArrayY.get(i))));
+	            	edgeAgents.add(i, new EdgeNode(i, (int) (long)(jsonArrayX.get(i)),(int) (long)(jsonArrayY.get(i))));
 	            }
 	        }  
-		      System.out.println("Number of configured EdgeNodes: "+edgeDevices.size());
+		      System.out.println("Number of configured EdgeAgents: "+edgeAgents.size());
                 
 	        
 	    

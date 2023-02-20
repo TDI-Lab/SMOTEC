@@ -23,17 +23,21 @@ public class Utility {
         podConfig.setPodname("agent"+id);
         podConfig.setAppname("agent"+id); 
         podConfig.setNumReplica(1); 
-        podConfig.setMyregistrykey("my-registry-key") ;
+        podConfig.setMyregistrykey(Constants.Secret) ;
         podConfig.setContainerName("agent"+id);
-        podConfig.setImageName("zeinabne/edge-testbed:pub");
-        podConfig.setContainerPort(8080+index);
+        podConfig.setImageName(Constants.ContainerImagesPath+"agents");
+        podConfig.setContainerPort(8090+index);
+        podConfig.setId(id);
         
-        PodServiceDef srvConfig = new PodServiceDef();
+        VolumDef volDef = new VolumDef();
+        volDef.setNodeSelector("master");
+        
+        ServiceDef srvConfig = new ServiceDef();
         srvConfig.setSrvname("agent"+id+"-service");
         srvConfig.setAppname("agent"+id);
-        srvConfig.setPort(8083);
-        srvConfig.setTargetPort(8080+index);
-        srvConfig.setNodePort(30000+index);
+        srvConfig.setPort(8090+index);
+        srvConfig.setTargetPort(8090+index);
+        srvConfig.setNodePort(30010+index);
         //srvConfig.setUsername("appuser");
         //srvConfig.setPassword("apppassword");
         
@@ -45,11 +49,12 @@ public class Utility {
             //objectMapper.writeValueAsString(new File("src/main/resources/application1.yaml"), srvConfig);
         	
             
-            File file = new File(Constants.yamlPath+index+".yaml");
+            File file = new File(Constants.yamlPath+id+".yaml");
             FileWriter fr = null;
 
 		    fr = new FileWriter(file);
 		    fr.write(podConfig.toString());
+		    fr.write(volDef.toStringAgent());
 		    fr.write(srvConfig.toString());            
 		    fr.close();
                     
@@ -61,7 +66,47 @@ public class Utility {
 	}
 
 	public static void creatEdgYaml(int i) {
-		// TODO Auto-generated method stub
-		
+		PodDefinition podConfig = new PodDefinition();
+        podConfig.setPodname("edge"+i);
+        podConfig.setAppname("edge"+i); 
+        podConfig.setNumReplica(1); 
+        podConfig.setMyregistrykey(Constants.Secret) ;
+        podConfig.setContainerName("edge"+i);
+        podConfig.setImageName(Constants.ContainerImagesPath+"edges");
+        podConfig.setContainerPort(8100+i);
+        podConfig.setId(i);
+        
+        VolumDef volDef = new VolumDef();
+        volDef.setNodeSelector("master");
+        
+        
+        ServiceDef srvConfig = new ServiceDef();
+        srvConfig.setSrvname("edge"+i+"-service");
+        srvConfig.setAppname("edge"+i);
+        srvConfig.setPort(8100+i);
+        srvConfig.setTargetPort(8100+i);
+        srvConfig.setNodePort(30030+i);
+        
+        try {
+        	
+        	//ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+            //objectMapper.writeValue(new File("/home/spring/Documents/Testbed/src/deployments/application1.yaml"), podConfig.toString());
+            //objectMapper.writeValueAsString(new File("src/main/resources/application1.yaml"), srvConfig);
+        	
+            
+            File file = new File(Constants.yamlPath+i+".yaml");
+            FileWriter fr = null;
+
+		    fr = new FileWriter(file);
+		    fr.write(podConfig.toString());
+		    fr.write(volDef.toStringAgent());
+		    fr.write(srvConfig.toString()); 
+		    
+		    fr.close();
+                    
+        } 
+        catch (IOException e) {
+                e.printStackTrace();
+        }
 	}
 }

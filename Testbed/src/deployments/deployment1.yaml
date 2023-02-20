@@ -1,38 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: agent1
+  name: edge1
   labels: 
-    app: agent1
+    app: edge1
 spec:
   replicas: 1
-  selctor:
+  selector:
     matchLabels:
-      app: agent1
+      app: edge1
   template:
     metadata:
       labels:
-        app: agent1
+        app: edge1
     spec:
       imagePullSecrets:
       - name: my-registry-key
       containers:
-      - name: agent1
-        image: zeinabne/edge-testbed:pub
+      - name: edge1
+        image: zeinabne/edge-testbed:edges
         imagePullPolicy: Always
         ports:
-        - containerPort: 8081
+        - containerPort: 8101
+        args: ["1"]
+      nodeSelector:
+        nn: master
 ---
 apiVersion: v1
 kind: Service
 metadate:
-  name: agent1-service
+  name: edge1-service
 spec:
   selector:
-    app: agent1
+    app: edge1
   type: LoadBalancer
   ports:
     - protocol: TCP
-    port: 8083
-    targetPort: 8081
-    nodePort: 30001
+      port: 8101
+      targetPort: 8101
+      nodePort: 30031

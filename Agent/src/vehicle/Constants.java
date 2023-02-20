@@ -27,20 +27,19 @@ public class Constants {
 	public static double FOG_DEVICE_COST_PER_STORAGE = 0.001;
 	public static double FOG_DEVICE_COST_PER_BW = 0.0;
 	public static String mobilityfile;
-	public static boolean win;
-	public static String infraFile;
+	public static String filePath;
+	public static String mobDir;
+	public static String brokerUrl;
+	public static int cpu;
+	public static int mem;
+	public static String conf;
+	public static int storage;
 	
-	public static void initialize(boolean win, int uId) {
-		 
-		if (win == true) {
-			
-			infraFile = "C:\\Users\\znb_n\\eclipse-workspace\\Agent\\src\\vehicle\\infrastructure.json";
-			//mobilityfile = "C:\\Users\\znb_n\\eclipse-workspace\\Agent\\src\\Mobility_Dataset\\"+ uId+".csv";
-		
-		}
-		else {
-			//mobilityfile = "/home/spring/Documents/Agent/src/Mobility_Dataset/" + uId+".csv";
-			infraFile = "/home/spring/Documents/Agent/src/vehicle/infrastructure.json";
-		}	
-	}
+	public static final int CONNREQ = 0;
+	public static final int RECOREQ = 1;
+	public static final int DISCREQ = 2;
+	public static final int HOSREQ = 3;
+	public static final int DOWNREQ = 4;
+	
+	
 }

@@ -34,15 +34,15 @@ public class Vehicle {
 		private EdgeNode hostEdge;
 		
 		private boolean status;
-		private Service container;
 		private double containerSize;
 		
 		
-		public Vehicle(String args1, String args2, String args3) {
+		public Vehicle(String args1) {
 			setId(Integer.parseInt(args1));
 			setName(args1);
-			CPU = Integer.parseInt(args2);
-			Memory = Integer.parseInt(args3);
+			CPU = Constants.cpu;
+			Memory = Constants.mem;
+			Storage = Constants.storage;
 			
 			setPath(new ArrayList<String[]>());
 			
@@ -97,11 +97,11 @@ public class Vehicle {
 			this.startTravelTime = startTravelTime;
 		}
 
-		public int getTravelTimeId() {
+		public int getTravelTime() {
 			return travelTimeId;
 		}
 
-		public void setTravelTimeId(int travelTimeId) {
+		public void setTravelTime(int travelTimeId) {
 			this.travelTimeId = travelTimeId;
 		}
 		public Coordinate getFutureCoord() {// myiFogSim
@@ -155,14 +155,6 @@ public class Vehicle {
 
 		public void setHostServerCloudlet(EdgeNode hostServerCloudlet) {
 			this.hostEdge = hostServerCloudlet;
-		}
-
-		public Service getContainer() {
-			return container;
-		}
-
-		public void setContainer(Service container) {
-			this.container = container;
 		}
 
 		public double getContainerSize() {
