@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: srv10004
+  labels: 
+    app: srv10004
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srv10004
+  template:
+    metadata:
+      labels:
+        app: srv10004
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: srv10004
+        image: zeinabne/smotec:traficservice
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        ports:
+        - containerPort: 32404
+        args: ["10004", "0"]
+      nodeSelector:
+        nn: worker1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: srv10004-service
+spec:
+  selector:
+    app: srv10004
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 32404
+      targetPort: 32404
+      nodePort: 32404
