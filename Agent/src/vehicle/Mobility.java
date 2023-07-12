@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-	public class Coordinate { 
+	/**
+	 * @author zeinab
+	 * This class reads the mobility profile of a mobile agent and keeps updating it over time
+	 */
+	public class Mobility { 
 
 		private int coordX;
 		private int coordY;
 
-		public Coordinate() {
+		public Mobility() {
 			
 		}
 
@@ -22,7 +26,11 @@ import java.util.List;
 		}
 
 		
-		public static void newCoordinate(Vehicle veh) {
+		/**
+		 * @param veh
+		 * updates VehicleAgent location with its next profile value
+		 */
+		public static void newlocation(Vehicle veh) {
 
 			ArrayList<String[]> path = veh.getPath();
 			if (veh.getTravelTime() < path.size()) {
@@ -32,23 +40,28 @@ import java.util.List;
 
 				int x = (int) Double.parseDouble(coodinates[2]);
 				int y = (int) Double.parseDouble(coodinates[3]);
-								if (x < Constants.MIN_X || y < Constants.MIN_Y || x >= Constants.MAX_X || y >= Constants.MAX_Y) {//zeinab
+				
+				if (x < Constants.MIN_X || y < Constants.MIN_Y || x >= Constants.MAX_X || y >= Constants.MAX_Y) {
 					setVehicleDown(veh);
-					System.out.println("VehAgent "+veh.getMyId()+" out of map.");
+					System.out.println("VehicleAgent "+veh.getMyId()+" out of map.");
 				}
 				else {
 					veh.getCoord().setCoordX(x);
 					veh.getCoord().setCoordY(y);
-					System.out.println("New coordinate : x="+ x+" "+"y="+ y+" time="+veh.getTravelTime());
+					System.out.println("New location : x="+ x+" "+"y="+ y+" time="+veh.getTravelTime());
 				}
 			}
 			else {
-				System.out.println("VehAgent "+veh.getMyId()+" end of mobility path.");
+				System.out.println("VehicleAgent "+veh.getMyId()+" end of mobility path.");
 				setVehicleDown(veh);
 			}
 		}
 	
-		public static void setInitialCoordinate(Vehicle veh) {
+		/**
+		 * @param veh
+		 * initializes the location of VehicleAgent using its mobilityprofile
+		 */
+		public static void setInitialProfile(Vehicle veh) {
 
 			ArrayList<String[]> path = veh.getPath();
 			if (!path.isEmpty()) {
@@ -70,12 +83,12 @@ import java.util.List;
 					veh.setStartTravelTime(time);
 					veh.getCoord().setCoordX(x);
 					veh.getCoord().setCoordY(y);
-					System.out.println("VehAgent coordinate initializing: x="+ x+" "+"y="+ y+" time="+time);
+					System.out.println("VehicleAgent location initializing: x="+ x+" "+"y="+ y+" time="+time);
 					
 				}
 			}
 			else {
-				System.out.println("path is empty");
+				System.out.println("no mobility data");
 				setVehicleDown(veh);
 			}
 			
