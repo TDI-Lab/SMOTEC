@@ -18,6 +18,12 @@ public class Distance {
 	
 
 	
+	/**
+	 * @param edgeAgents
+	 * @param veh
+	 * @param closEgAg
+	 * @return the three most closest EdgeAgents (access points) to itself
+	 */
 	public static int closestEdgeAgents(List<EdgeNode> edgeAgents, Vehicle veh, int[] closEgAg) {
 
 		double min = Integer.MAX_VALUE;
@@ -25,16 +31,12 @@ public class Distance {
         double secmin = min;
         double thirdmin = min;
         
-        //int[] closAP = new int[]{0,0,0};
-		double dis;
+        double dis;
 		for (int i =0; i<edgeAgents.size(); i++) {
 			 dis = calDistance(edgeAgents.get(i).getCoord(), veh.getCoord());
-			 //System.out.println("i "+i+" dis "+dis);
-	            
+			    
 			 if (dis < Constants.AP_COVERAGE) {
-            	
-	          
-				if (dis < firstmin)
+            	if (dis < firstmin)
 	            {
 					thirdmin = secmin;
 	                secmin = firstmin;
@@ -45,8 +47,7 @@ public class Distance {
 	                
 	            }
 				
-				/* Check if current element is less than
-	            secmin then update second and third */
+
 	            else if (dis < secmin)
 	            {
 	                thirdmin = secmin;
@@ -56,8 +57,7 @@ public class Distance {
 	                
 	            }
 				
-				/* Check if current element is less than
-	            then update third */
+
 	            else if (dis < thirdmin) {
 	                thirdmin = dis;
 					closEgAg[2] = edgeAgents.get(i).getMyId();
@@ -66,11 +66,7 @@ public class Distance {
 	         }	
 		}
 		
-        //System.out.println("First min = " + firstmin + ",id "+ closAP[0]);
-        //System.out.println("Second min = " + secmin + ",id "+ closAP[1]);
-       // System.out.println("Third min = " + thirdmin + ",id "+closAP[2]);
-		
-		if(closEgAg[0] == -1)
+       if(closEgAg[0] == -1)
 			return 0;
 		else if(closEgAg[1] == -1)
 			return 1;
@@ -85,9 +81,9 @@ public class Distance {
 	/**
 	 * @param firstCoord
 	 * @param secondCoord
-	 * @return the distance between two points
+	 * @return the distance between two locations
 	 */
-	public static double calDistance(Coordinate firstCoord, Coordinate secondCoord) {
+	public static double calDistance(Mobility firstCoord, Mobility secondCoord) {
 		setFirst((double) Math.pow(firstCoord.getCoordX() - secondCoord.getCoordX(), 2));
 		setSecond((double) Math.pow(firstCoord.getCoordY() - secondCoord.getCoordY(), 2));
 		setDistance(Math.sqrt(getFirst() + getSecond()));

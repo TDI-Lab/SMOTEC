@@ -1,8 +1,11 @@
 package pi;
 	
+/**
+ * @author zeinab
+ * defines a K3s deployment file with the extension of .yaml
+ *
+ */
 public class PodDefinition {
-		
-	
 	    
 	private String version = "apps/v1";
 	private String podname;
@@ -17,6 +20,7 @@ public class PodDefinition {
 	private int memDemand;
 	private int agentId;
 	private int hostId;
+	private int portTopUp = 22400;
 	
 	public int getHostId() {
 		return hostId;
@@ -103,45 +107,9 @@ public class PodDefinition {
 	}
 	
 	public void setContainerPort(int containerPort) {
-		this.containerPort = containerPort;
+		this.containerPort = containerPort + portTopUp;
 	}
 	
-	
-	
-	/*
-	apiVersion: apps/v1
-	kind: Deployment
-	metadata:
-	  name: python-pub1
-	  labels:
-	    app: python-pub1
-	spec:
-	  replicas: 2
-	  selector:
-	    matchLabels:
-	      app: python-pub1
-	  template:
-	    metadata:
-	      labels:
-	        app: python-pub1
-	    spec:
-	      imagePullSecrets:
-	      - name: my-registry-key
-	      containers:
-	      - name: python-pub
-	        image: zeinabne/edge-testbed:pub
-	        imagePullPolicy: Always
-	        resources:
-      		  limits:
-        		cpu: 300m
-        		memory: 200Mi
-      		  requests:
-        		cpu: 200m
-        		memory: 100Mi
-	        ports:
-	        - containerPort: 8081
-	     */
-	    
 	@Override
 	public String toString() {
 	    	return "apiVersion: " + version + "\n"
@@ -174,7 +142,7 @@ public class PodDefinition {
 				    +"            cpu: "+getCpuDemand()+"m\n"
 				    +"            memory: "+getMemDemand()+"Mi\n"
 	                +"        ports:\n"
-	                +"        - containerPort: " + containerPort+"\n"
+	                +"        - containerPort: " + getContainerPort() +"\n"
 	                +"        args: [\""+agentId+"\", \""+hostId+"\"]\n";
 	                 
 	    }

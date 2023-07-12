@@ -2,13 +2,12 @@ package vehicle;
 
 public class EdgeNode {
 	
-	protected Coordinate coord;
-	
+	protected Mobility coord;
 	public int id;
 	
 	public EdgeNode(int i, int Coor1, int Coor2) {
 		id = i;
-		this.coord = new Coordinate();
+		this.coord = new Mobility();
 		setCoord(Coor1, Coor2);
 		
 	}
@@ -26,11 +25,11 @@ public class EdgeNode {
 		return id;
 	}
 
-	public void setCoord(Coordinate coord) {
+	public void setCoord(Mobility coord) {
 		this.coord = coord;
 	}
 
-	public Coordinate getCoord() {
+	public Mobility getCoord() {
 		// TODO Auto-generated method stub
 		return coord;
 	}

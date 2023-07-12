@@ -1,20 +1,13 @@
 package vehicle;
 
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
 
 
 
+/**
+ * @author zeinab
+ * This class offers an abstraction of a mobile node with its computation resources, mobility, and connected edge nodes
+ */
 public class Vehicle {
 		private int id;
 		private String name;
@@ -22,10 +15,10 @@ public class Vehicle {
 		private int Memory;
 		private int Storage;
 
-		private int direction; // NONE, NORTH, SOUTH, ...
-		private int speed; // in m/s
-		protected Coordinate coord;
-		protected Coordinate futureCoord;// = new Coordinate();//myiFogSim
+		private int direction; 
+		private int speed; 
+		protected Mobility mob;
+
 		protected ArrayList<String[]> path;
 		protected int startTravelTime;
 		protected int travelTimeId;
@@ -46,9 +39,7 @@ public class Vehicle {
 			
 			setPath(new ArrayList<String[]>());
 			
-			this.coord = new Coordinate();
-			this.futureCoord = new Coordinate();
-			setFutureCoord(-1, -1);
+			this.mob = new Mobility();
 			setStatus(true);
 			
 			}
@@ -57,7 +48,7 @@ public class Vehicle {
 		public String toString() {
 			return this.getName() + "[coordX=" + this.getCoord().getCoordX() + ", coordY="
 				+ this.getCoord().getCoordY() + ", direction=" + direction + ", speed=" + speed
-				+ ", connectedEdge=" + connectedEdge.id +", hostEdge=" + hostEdge.id+"]";
+				+ ", connectedEdgeNode=" + connectedEdge.id +", serviceHostNode=" + hostEdge.id+"]";
 		}
 
 		public String getName() {
@@ -104,16 +95,9 @@ public class Vehicle {
 		public void setTravelTime(int travelTimeId) {
 			this.travelTimeId = travelTimeId;
 		}
-		public Coordinate getFutureCoord() {// myiFogSim
-			return futureCoord;
-		}
 
-		public void setFutureCoord(int coordX, int coordY) {
-			this.futureCoord.setCoordX(coordX);
-			this.futureCoord.setCoordY(coordY);
-		}
-		public Coordinate getCoord() {
-			return coord;
+		public Mobility getCoord() {
+			return mob;
 		}
 
 		public EdgeNode getHostNode() {
@@ -122,7 +106,7 @@ public class Vehicle {
 
 		public void setHostNode(EdgeNode host) {
 			this.hostEdge = host;
-			System.out.println("Agent service "+name+" hosted on Edge Server: "+host.getMyId());
+			System.out.println("VehicleAgent service "+name+" hosted on Edge Server: "+host.getMyId());
 			}
 
 		
@@ -137,8 +121,8 @@ public class Vehicle {
 		
 
 		public void setCoord(int coordX, int coordY) {
-			this.coord.setCoordX(coordX);
-			this.coord.setCoordY(coordY);
+			this.mob.setCoordX(coordX);
+			this.mob.setCoordY(coordY);
 		}
 
 		public void setId(int id) {
@@ -146,7 +130,6 @@ public class Vehicle {
 		}
 		
 		public int getMyId() {
-			// TODO Auto-generated method stub
 			return this.id;
 		}
 		public EdgeNode getHostServerCloudlet() {
@@ -166,13 +149,10 @@ public class Vehicle {
 		}
 
 		
-		public void setCoord(Coordinate coord) {
-			this.coord = coord;
+		public void setCoord(Mobility coord) {
+			this.mob = coord;
 		}
 
-		public void setFutureCoord(Coordinate futureCoord) {
-			this.futureCoord = futureCoord;
-		}
 		public int getCPU() {
 			return CPU;
 		}

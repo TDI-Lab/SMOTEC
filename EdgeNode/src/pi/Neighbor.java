@@ -1,5 +1,10 @@
 package pi;
 
+/**
+ * @author zeinab
+ * Defines the edge nodes in the network with their resources and locations
+ *
+ */
 public class Neighbor {
 	
 	int id;
@@ -13,8 +18,10 @@ public class Neighbor {
 	int CPUMax;
 	int MemMax;
 	int StorageMax;
+	
+	String nodelabel; 
+	
 	int numServices = 0;
-	//int[] srvId;
 	
 	public int IncRunningSrv() {
 		return numServices++;
@@ -25,14 +32,16 @@ public class Neighbor {
 	public int gettNumServices(int numServices) {
 		return numServices;
 	}
-	public Neighbor(int id, int x, int y, int cPU, int memory, int storage) {
+	public Neighbor(int id, String label, int x, int y, int cPU, int memory, int storage) {
 		
 		this.id = id;
+		this.nodelabel = label;
 		this.x = x;
 		this.y = y;
 		CPU = cPU;
 		Memory = memory;
 		Storage = storage;
+		
 		CPUMax = cPU;
 		MemMax = memory;
 		StorageMax = storage;

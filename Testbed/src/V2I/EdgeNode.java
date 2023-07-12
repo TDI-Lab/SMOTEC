@@ -1,37 +1,46 @@
 package V2I;
 
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 
+
+/**
+ * defines an edge node with its characteristics
+ */
 public class EdgeNode {
 
 		public String name;
-		protected List<String> activeApplications;
-		
-		protected boolean available;
-		
 		protected int myId;
-
-		public EdgeNode(int id, String name) {
+		public String label;
+		protected boolean available;
+		//location
+		int x;
+		int y;
+		
+		//current available resources:
+		int CPU;
+		int Memory;
+		int Storage;
+		
+		//current load
+		int cload, mload, sload;
+		
+		public EdgeNode(int id, String name, int x, int y, int cPU, int memory, int storage, String elabel) {
+			
 			this.setMyId(id);
 			this.setName(name);
+			this.label = elabel;
+			
+			this.x = x;
+			this.y = y;
+			CPU = cPU;
+			Memory = memory;
+			Storage = storage;
+			cload = 0;
+			mload = 0;
+			sload = 0;
 			
 		}
 		private void setName(String name2) {
-			// TODO Auto-generated method stub
 			name = name2;
 		}
 		

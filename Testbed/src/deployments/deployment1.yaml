@@ -15,27 +15,68 @@ spec:
         app: edge1
     spec:
       imagePullSecrets:
-      - name: my-registry-key
+      - name: 
       containers:
       - name: edge1
-        image: zeinabne/edge-testbed:edges
+        image: zeinabne/smotec:edgeagent
         imagePullPolicy: Always
         ports:
-        - containerPort: 8101
+        - containerPort: 32301
+        - containerPort: 32101
+        - containerPort: 32201
         args: ["1"]
+        volumeMounts:
+        - name: testbedconfig
+          mountPath: /tmp/src/conf/TestbedConfig.json
+          subPath: TestbedConfig.json
+      volumes:
+      - name: testbedconfig
+        configMap:
+          name: testbedconfig
       nodeSelector:
-        nn: master
+        nn: worker2
 ---
 apiVersion: v1
 kind: Service
-metadate:
-  name: edge1-service
+metadata:
+  name: edge1-listen
 spec:
   selector:
     app: edge1
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
-      port: 8101
-      targetPort: 8101
-      nodePort: 30031
+      port: 32301
+      name: listen
+      targetPort: 32301
+      nodePort: 32301
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge1-response
+spec:
+  selector:
+    app: edge1
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 32101
+      name: response
+      targetPort: 32101
+      nodePort: 32101
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge1-trafmon
+spec:
+  selector:
+    app: edge1
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 32201
+      name: trafmon
+      targetPort: 32201
+      nodePort: 32201

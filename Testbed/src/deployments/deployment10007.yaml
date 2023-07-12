@@ -18,24 +18,25 @@ spec:
       - name: my-registry-key
       containers:
       - name: agent10007
-        image: zeinabne/edge-testbed:agents
+        image: zeinabne/edge-testbed:vehagent1
         imagePullPolicy: Always
         ports:
-        - containerPort: 8097
-        args: ["10007"]
+        - containerPort: 32007
+        args: ["10007", "2000", "100", "130", "80", "1"]
       nodeSelector:
         nn: master
 ---
 apiVersion: v1
 kind: Service
-metadate:
+metadata:
   name: agent10007-service
 spec:
   selector:
     app: agent10007
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
-      port: 8097
-      targetPort: 8097
-      nodePort: 30017
+      port: 32007
+      name: listener
+      targetPort: 32007
+      nodePort: 32007

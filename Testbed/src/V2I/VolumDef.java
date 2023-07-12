@@ -1,9 +1,28 @@
 package V2I;
 
+/**
+ * This class specifies the host nodes for container deployment and
+ *  defines the volumes for containers to access the configuration values and 
+ */
 public class VolumDef {
 
 
 	private String nodeSelector;
+	private String configMap;
+	private String mountPath;
+	private String subPath;
+	
+	public void setConfigMap(String configMap) {
+		this.configMap = configMap;
+	}
+
+	public void setMountPath(String edgeMountPath) {
+		this.mountPath = edgeMountPath;
+	}
+
+	public void setSubPath(String edgeSubPath) {
+		this.subPath = edgeSubPath;
+	}
 	
 	public String getNodeSelector() {
 		return nodeSelector;
@@ -13,43 +32,19 @@ public class VolumDef {
 		this.nodeSelector = nodeSelector;
 	}
 
-    
-    
-    
-    /*
-    volumeMounts:
-        - name: pvc-nfs-pv1
-          mountPath: /datasets/
-        - name: pvc-nfs-pv1out
-          mountPath: /output/
-      nodeSelector:
-        nn: client2
-      volumes:
-      - name: pvc-nfs-pv1
-        persistentVolumeClaim:
-          claimName: pvc-nfs-pv1
-      - name: pvc-nfs-pv1out
-        persistentVolumeClaim:
-          claimName: pvc-nfs-pv1out 
-      */    
-    public String toStringEdge() {
-    	return  "        volumeMounts:\n"
-    		    +"        - name: pvc-nfs-pv1\n"
-    		    +"          mountPath: /datasets/\n"
-    		    +"        - name: pvc-nfs-pv1out\n"
-    		    +"          mountPath: /output/\n"
-    		    +"      nodeSelector:\n"
-    		    +"        nn: "+nodeSelector+"\n"
+    public String toStringVol() {
+    	return  "\n        volumeMounts:\n"
+    		    +"        - name: "+configMap+"\n"
+    		    +"          mountPath: "+mountPath+"\n"
+    		    +"          subPath: "+subPath+"\n"
     		    +"      volumes:\n"
-    		    +"      - name: pvc-nfs-pv1\n"
-    		    +"        persistentVolumeClaim:\n"
-    		    +"          claimName: pvc-nfs-pv1\n"
-    		    +"      - name: pvc-nfs-pv1out\n"
-    		    +"        persistentVolumeClaim:\n"
-    		    +"          claimName: pvc-nfs-pv1out";
+    		    +"      - name: "+configMap+"\n"
+    		    +"        configMap:\n"
+    		    +"          name: "+configMap;
     	
     }
-    public String toStringAgent() {
+
+    public String toStringNodeSel() {
     	return  "\n      nodeSelector:\n"
     		    +"        nn: "+nodeSelector;
     }

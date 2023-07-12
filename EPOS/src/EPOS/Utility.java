@@ -2,55 +2,40 @@ package EPOS;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Scanner;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class Utility {
 
-		
-	static void sendSelectedPlans() {
-		// TODO Auto-generated method stub
-		int[] map = new int [Constants.numofEdgeAgents];
-		Utility.ReadMapping(map);
-		String selectPlans = "EPOS!";
-		
-		System.out.println("Sending selected plans...");
-		for (int k = 0; k<Constants.numofEdgeAgents; k++) {
-			System.out.println("EdgeAgent: "+k+", selected plan index: "+map[k]);
-				
-			  selectPlans += k+":"+map[k]+":";
-				  
-			}
-		
-			Producer planProd = new Producer();
-			planProd.open();
-			planProd.send_message(selectPlans);
-			planProd.close();
-		   
-			
-		   	  
-				
-	}
+	static int[] selectedPlans = new int [Constants.numofEdgeAgents];
+	
+	/**
+	 * @param edgeAgentSelPlans returns the output of I-EPOS which represents the index of selected plans
+	 */
 	public static void ReadMapping(int[] edgeAgentSelPlans) {
 		
-		System.out.println("reading input from EPOS......\n");
-	    //int selectedPlans = 0;// output of I-EPOS; index of selected plans
+		System.out.print("\nService distributor reading output of EPOS....");
+	   
 	    File dir = new File(new File("").getAbsolutePath()+"/output");
 	    File[] files = dir.listFiles();
-	    //to simply check the last output folder of I-EPOS which contains the output of last recent run:
+	    
+	    //check the last output folder of I-EPOS which contains the output of last recent run:
 	    File lastModified = Arrays.stream(files).filter(File::isDirectory).max(Comparator.comparing(File::lastModified)).orElse(null);
-	    System.out.println(lastModified);
+	    System.out.println("from address "+ lastModified);
 	    /*
 	    * In addition to the selected plans, the global-cost (utilization variance) of the selected plans and corresponding local-cost 
-	    *is stored for further comparison with EPOS Fog results: 
-	    *the realized variance and the predicted one
+	    * are stored for further comparison with EPOS results: 
 	    **/
 	    String global_cost_File =lastModified+"/global-cost.csv";
 	    String local_cost_File =lastModified+"/local-cost.csv";
@@ -65,15 +50,15 @@ public class Utility {
 	    //extract the iteration and run number with the minimum global-cost
 	    try (BufferedReader br = new BufferedReader(new FileReader(global_cost_File))) 
 	    {
-	        // br.readHeaders();
+	        
 	        for (i = 0; i < Constants.iteration; i++)
 	            br.readLine();
 	        line = br.readLine();//go to the last line
 	        String[] input = line.split(cvsSplitBy);
 	        for (i = 0; i < Constants.simulation; i++)
-	            costs[i] = Double.parseDouble(input[3+i]);//read costs for different simulations
+	            costs[i] = Double.parseDouble(input[3+i]);//read costs of different EPOS simulations
 	
-	        minRun = findMinRun(costs, Constants.simulation);//the index of min global cost
+	        minRun = findMinRun(costs, Constants.simulation);//find the index of minimum value of global cost
 	        index = Constants.iteration*minRun + Constants.iteration;
 	       
 	            
@@ -82,10 +67,10 @@ public class Utility {
 	    {
 	        e.printStackTrace();
 	    }  
-	    //read the corresponding local-cost with the glocal-cost
+	    //read the corresponding local-cost with the minimum global-cost
 	    try (BufferedReader br = new BufferedReader(new FileReader(local_cost_File))) 
 	    {
-	        //System.out.println(" minRun1: "+minRun);
+	        
 	        for (i = 0; i < Constants.iteration; i++)
 	            br.readLine();
 	        line = br.readLine();
@@ -96,15 +81,15 @@ public class Utility {
 	    catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	    //find the selected plan index for each agent/node:
+	    //find the selected plan index for each agent/edge node:
 	    try (BufferedReader br = new BufferedReader(new FileReader(selected_plans_File))) 
 	    {
-	        // br.readHeaders();
+	      
 	        for (i = 0; i < index; i++)
 	            br.readLine();
+	        
 	        line = br.readLine();//index+1
 	        String[] input = line.split(cvsSplitBy);
-	        //System.out.println(input[0]+" "+input[1]+" "+input[2]+" "+input[3]+" "+input[4]);
 	        for (int k = 0; k<Constants.numofEdgeAgents; k++)
 	        	edgeAgentSelPlans[k] = Integer.parseInt(input[2+k]);
 	        
@@ -114,21 +99,184 @@ public class Utility {
 	        e.printStackTrace();
 	    }
 	
-	//writeGC(costs[minRun],loc_costs); 
+	selectedPlans = edgeAgentSelPlans;
+}
 	
-	//System.out.println("global cost: "+costs[minRun]+" local cost: "+loc_costs+" minRun "+minRun+" index: "+index);
-	//return piIndex;
+	public static void writeOutput(){
+		String comma = ",";
+		boolean append = false;
+		
+		
+		try {		
+		
+			FileWriter fw = new FileWriter(creatFile(), append);
+			
+			for (int k = 0; k<Constants.numofEdgeAgents; k++) {
+	
+					fw.append(k+"").append(comma);
+					fw.append(selectedPlans[k]+"");
+					fw.append(System.lineSeparator());
+				}
+			
+			fw.flush();
+			fw.close();
+		
+		}
+		catch(Exception e){
+			System.out.println();
+			e.printStackTrace();
+			
+		}
+	}
+	
+	private static String creatFile() {
+		File theDir = (new File(new File("").getAbsolutePath()+"/S_plans/"+Constants.curTime));
+		if (!theDir.exists()) {
+			theDir.mkdirs();
+		}
+		
+		System.out.println(theDir);
+		File filePath = new File (theDir+"/selPlans.csv");
+		try {
+			if(filePath.createNewFile()) {
+				
+			}
+			else {
+				
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		Constants.curTime++;
+		
+		String out_file = theDir+"/selPlans.csv";
+	return out_file;
+		
+	}
 
-}
-public static int findMinRun(double[] globalCosts, int index){
-    int mini = 0;
-    double min = globalCosts[0];
-    for (int j = 0; j<index; j++)
-        if (globalCosts[j] < min){//if equal keep the lower index
-            min = globalCosts[j];
-            mini = j;
-        }
-    return mini;
-}
+	/**
+	 * @param globalCosts array of global-cost values of different EPOS simulations
+	 * @param index the index of minimum global cost
+	 * @return
+	 */
+	public static int findMinRun(double[] globalCosts, int index){
+	    int mini = 0;
+	    double min = globalCosts[0];
+	    for (int j = 0; j<index; j++)
+	        if (globalCosts[j] < min){ //if values are equal then keep the lower index
+	            min = globalCosts[j];
+	            mini = j;
+	        }
+	    System.out.println("Global cost="+min);
+	    return mini;
+	}
+
+	/**
+	 * @param conf configuration file for SMOTEC 
+	 * reads the configuration values from input and set the EPOS parameters based on them
+	 */
+	public static void read_conf(String conf) {
+		String confPath = new File("").getAbsolutePath()+"/conf/";
+		
+		JSONParser parser = new JSONParser();
+		
+	    try {
+	        Object obj = parser.parse(new FileReader(conf));
+			
+	        JSONArray jsonObjects =  (JSONArray) obj;
+
+	        int numPlans = 4;
+			int planDim = 4 ;
+			for (Object o : jsonObjects) {
+	            JSONObject jsonObject = (JSONObject) o;
+	            
+	            Constants.numofEdgeAgents = ((int) (long) jsonObject.get("NumEdgeNodes")>2?(int) (long) jsonObject.get("NumEdgeNodes"):3);
+	    		numPlans = (int) (long) jsonObject.get("EPOSNumPlans");
+	    		Constants.simulation = (int) (long) jsonObject.get("EPOSnumSimulations");
+   				Constants.iteration = (int) (long) jsonObject.get("EPOSnumIterations");
+   				planDim = (int) (long) jsonObject.get("EPOSplanDim");
+	        }  
+			
+			setConfPro(confPath+"epos.properties", numPlans, planDim);
+		      
+			System.out.println("Config values updated: Num of edge agents="+Constants.numofEdgeAgents+", Num of plans per agent="+numPlans+
+					" Num of iterations="+Constants.iteration+" Num of Simulations="+Constants.simulation);
+                
+	        
+	    
+			}catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    } catch (ParseException e) {
+		        e.printStackTrace();
+		    }
+		
+	}
+
+	/**
+	 * @param filePath
+	 * @param numPlans
+	 * @param planDim
+	 * sets EPOS parameters
+	 */
+	private static void setConfPro(String filePath, int numPlans, int planDim) {
+		
+	      //Instantiating the Scanner class to read the file
+	      Scanner sc;
+	      try {
+	    	  	 sc = new Scanner(new File(filePath));
+		
+			      //instantiating the StringBuffer class
+			      StringBuffer buffer = new StringBuffer();
+			      //Reading lines of the file and appending them to StringBuffer
+			      while (sc.hasNextLine()) {
+			         buffer.append(sc.nextLine()+System.lineSeparator());
+			      }
+			      
+			      String fileContents = buffer.toString();
+			      sc.close();
+			      
+			      String oldLine = "numSimulations=2";
+			      String newLine = "numSimulations="+Constants.simulation;
+			      //Replacing the old line with new line
+			      fileContents = fileContents.replaceAll(oldLine, newLine);
+			      
+			      String oldLine1 = "numIterations=3";
+			      String newLine1 = "numIterations="+Constants.iteration;
+			      //Replacing the old line with new line
+			      fileContents = fileContents.replaceAll(oldLine1, newLine1);
+			      
+			      String oldLine2 = "numAgents=3";
+			      String newLine2 = "numAgents="+Constants.numofEdgeAgents;
+			      //Replacing the old line with new line
+			      fileContents = fileContents.replaceAll(oldLine2, newLine2);
+			      
+			      String oldLine3 = "numPlans=4";
+			      String newLine3 = "numPlans="+numPlans;
+			      //Replacing the old line with new line
+			      fileContents = fileContents.replaceAll(oldLine3, newLine3);
+			      
+			      String oldLine4 = "planDim=4";
+			      String newLine4 = "planDim="+planDim;
+			      //Replacing the old line with new line
+			      fileContents = fileContents.replaceAll(oldLine4, newLine4);
+			      
+			      //instantiating the FileWriter class
+			      FileWriter writer = new FileWriter(filePath);
+			      writer.append(fileContents);
+			      writer.flush();
+				
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		
+	}
+
 
 }

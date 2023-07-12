@@ -1,17 +1,23 @@
 package pi;
 
+/**
+ * @author zeinab
+ * this class defines a request received from a mobile agent
+ *
+ */
 public class Request {
-	int vehAgent;
+	int vehAgentId;//agentId
 	int hostId = -1;
 	int travelTime;
 	int type;
+	
 	//resource demands:
 	private int CPU;
 	private int Memory;
 	private int Storage;
 	
 	public Request(String agent, String cpu, String mem, String storage, int t, int time, int host) {
-		this.vehAgent = Integer.parseInt(agent);
+		this.vehAgentId = Integer.parseInt(agent);
 		
 		CPU = Integer.parseInt(cpu);
 		Memory = Integer.parseInt(mem);
@@ -22,9 +28,21 @@ public class Request {
 
 	}
 
+	public Request(int vehAgentId2, int cpu2, int memory2, int storage2, int conreq, int travelTime2, int host) {
+		
+		this.vehAgentId = vehAgentId2;
+		
+		CPU = cpu2;
+		Memory = memory2;
+		Storage = storage2;
+		travelTime = travelTime2;
+		type = conreq;
+		hostId = host;
+	}
+
 	@Override
 	public String toString() {
-		return "Request [reqId=" + vehAgent + ", CPU=" + CPU + ", Memory=" + Memory + ", Storage=" + Storage + "] is created";
+		return "Request [reqId=" + vehAgentId + ", CPU=" + CPU + ", Memory=" + Memory + ", Storage=" + Storage + "] is created";
 	}
 
 	public int getHostId() {
@@ -53,8 +71,7 @@ public class Request {
 
 
 	public String getReqIdStr() {
-		// TODO Auto-generated method stub
-		return vehAgent+"";
+		return vehAgentId+"";
 	}
 
 

@@ -1,5 +1,10 @@
 package pi;
 
+/**
+ * @author zeinab
+ * defines a collector service for a service request
+ *
+ */
 public class ServiceDef {
 
 	private String version;
@@ -10,6 +15,7 @@ public class ServiceDef {
 	private String appname;
 	private int targetPort;
 	private int nodePort;
+	private int portTopUp = 22400;
     
     public String getVersion() {
 		return version;
@@ -33,20 +39,20 @@ public class ServiceDef {
 		return targetPort;
 	}
 	public void setTargetPort(int i) {
-		this.targetPort = i;
+		this.targetPort = i+portTopUp;
 	}
 	public int getNodePort() {
 		return nodePort;
 	}
 	public void setNodePort(int i) {
-		this.nodePort = i;
+		this.nodePort = i+portTopUp;
 	}
 
     public Integer getPort() {
         return port;
     }
-    public void setPort(Integer port) {
-        this.port = port;
+    public void setPort(int port) {
+        this.port = port+portTopUp;
     }
     
     public String getUsername() {
@@ -62,36 +68,22 @@ public class ServiceDef {
         this.password = password;
     }
     
-    /*
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: python-pub-service1
-    spec:
-      selector:
-        app: python-sub1
-      type: LoadBalancer  
-      ports:
-        - protocol: TCP
-          port: 8083
-          targetPort: 8083
-          nodePort: 30003
-      */    
+   
     @Override      
     public String toString() {
         return "---" + "\n"
         		+"apiVersion: v1\n"
         		+"kind: Service\n" 
-                +"metadate:\n" 
+                +"metadata:\n" 
                 +"  name: " + srvname + "\n"
                 +"spec:\n" 
                 +"  selector:\n"
                 +"    app: "+ appname + "\n"
-                +"  type: LoadBalancer" + "\n"
+                +"  type: NodePort" + "\n"
                 +"  ports:\n" 
                 +"    - protocol: TCP\n"
-                +"      port: " + port + "\n"
-                +"      targetPort: " + targetPort + "\n"
-                +"      nodePort: " + nodePort;
+                +"      port: " + getPort() + "\n"
+                +"      targetPort: " + getTargetPort() + "\n"
+        		+"      nodePort: "+ getNodePort();
     }
 }

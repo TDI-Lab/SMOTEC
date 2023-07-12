@@ -1,50 +1,41 @@
 package pi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 
 
 /**
- * @author rooyesh
- *
+ * @author zeinab
+ * defines  a service placement plan which includes a binary array showing the mapping from service requests to available edge nodes
+ * an associated array showing the utilization of edge nodes corresponding to the binary plan.
  */
 public class Plan {
-	int edgeNode;//associated node
-    public short planIndex;//excessive
-    int agIndex;//index of the associated cloudlet in the cloudlet list 
-    
-	public boolean empty_node = false;
+	
+	int edgeNode;
+    public short planIndex;
+    int agIndex;//index of the EdgeAgent
+    private int numOfEdgeNodes;
     public int ServiceSize;
-	public short[][] x; // x_aj
+	
+	public boolean empty_node = false;//if no requests received by this EdgeAgent
+    public short[][] x; //binary plan: mapping from requests to edge nodes
     public int[] y;
-    /**
-     * total mips load on hosts
-     */
-    public double[] utilPlan;// = new double[numOfNodes*2];//CPU and Mem
-    /**
-     * total "mi per request" load on hosts
-     */
-    public double[] wlPlan;// = new double[numOfNodes*2];//CPU : mi per request and Mem
+   
+    public double[] utilPlan;//utilization plan with the dimension: numOfEdgeNodes*2;//one half for CPU and one half for Memory 
+    
+    public double[] wlPlan;// workload 
     public boolean selected = false;
     
     //public double cost;
     int unassTasks;
     double migCost;
    
-	private int numOfServers;
-	
-        		
-    /**Global response
-     * The constructor of the class. Initializes the arrays 
-     * @param numServices the number of services
-     * @param numFogNodes the number of fog nodes
-     * @param numCloudServers the number of cloud servers
+	/**
+     * @param agindex
+     * @param planindex
+     * @param serviceSize
+     * @param nodes
+     * 
+     * if service list is empty --> plan contains zero as workload and utilization value
      */
-    
-    
-    //service list is empty --> plan contains zero as workload and utilization
     public Plan(int agindex, short planindex, int serviceSize, int nodes) {
         
         	planIndex = planindex;
@@ -52,20 +43,16 @@ public class Plan {
         	ServiceSize = serviceSize;
         	unassTasks = 0;
         	migCost = 0;
-        	
-	        numOfServers = nodes;
-	        if (serviceSize != 0) {
+        	numOfEdgeNodes = nodes;
+	        
+        	if (serviceSize != 0) {
 	        	
 	        	x = new short[serviceSize][nodes];
 		        y = new int[serviceSize];
-		        //v = new int[serviceSize][Constants.EDGE_ROUTERS+Constants.BACKBONE_ROUTERS];
-	            //d = new double[serviceSize][Constants.EDGE_ROUTERS+Constants.BACKBONE_ROUTERS];
-	            //Vper = new double[serviceSize];
-		        
-	        }
+		    }
 	        
-	        utilPlan = new double[2*(nodes)];//CPU and energy
-            wlPlan = new double[2*(nodes)];//CPU and energy
+	        utilPlan = new double[2*(nodes)];//CPU and memory
+            wlPlan = new double[2*(nodes)];//CPU and memory
             initializewl();
             
           if (serviceSize == 0 ) {
@@ -87,32 +74,29 @@ public class Plan {
 		
 	}
 
-	
- 	/*
-		 * //Memory utilPlan[hostIndex+Constants.numCloudServers+Constants.numFogNodes]
-		 * = (ms.getMemDemand() +
-		 * wlPlan[hostIndex+Constants.numCloudServers+Constants.numFogNodes]) /
-		 * (ramCapacity); wlPlan[hostIndex+Constants.numCloudServers+Constants.numFogNodes] += ms.getMemDemand();
-        */
+	/**
+	 * @param hostIndex
+	 * @param serviceIndex
+	 * @param ms
+	 * @param mipsCapacity
+	 * @param memCapacity
+	 * updates utilization and binary plan whenever a service is deployed to an EdgeNode
+	 */
 	public void updatePlan(int hostIndex, int serviceIndex, Request ms, double mipsCapacity, double memCapacity) {
 		
- 		x[serviceIndex][hostIndex] = 1;
+ 		x[serviceIndex][hostIndex] = 1;//update binary plan
  		y[serviceIndex] = hostIndex;
  		
- 		//CPU demand: be careful with utilPlan:
+ 		//update CPU utilization
         utilPlan[hostIndex] = (ms.getCPU() + utilPlan[hostIndex]*mipsCapacity) / (mipsCapacity);
-        //mi per request:
+        //update cpu load in mips
         wlPlan[hostIndex] += ms.getCPU();
-        //deployPlan[hostIndex] = true;
-		
         
-		// memory part: 
-        wlPlan[hostIndex+numOfServers] += ms.getMemory();
-		utilPlan[hostIndex + numOfServers] = wlPlan[hostIndex+numOfServers] / memCapacity;
-		 
-
-         		
-        
+        //update memory load in MB
+		wlPlan[hostIndex+numOfEdgeNodes] += ms.getMemory();
+		//update memory utilization
+        utilPlan[hostIndex + numOfEdgeNodes] = wlPlan[hostIndex+numOfEdgeNodes] / memCapacity;
+		         
    }
  	
 	public double getCosts() {
@@ -120,13 +104,7 @@ public class Plan {
 	} 
 	
 	public void setCost(int c) {
-		
-		/*
-		for (int i = 0; i<numOfServers; i++)
-			if(requests.get(i).hostId != y[i])
-				migCost++;
-				*/
-		
+	
 	}
 	public int getUnassTasks() {
 		return unassTasks;

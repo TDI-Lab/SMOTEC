@@ -15,27 +15,36 @@ spec:
         app: agent10002
     spec:
       imagePullSecrets:
-      - name: my-registry-key
+      - name: 
       containers:
       - name: agent10002
-        image: zeinabne/edge-testbed:agents
+        image: zeinabne/smotec:vehicleagent
         imagePullPolicy: Always
         ports:
-        - containerPort: 8092
-        args: ["10002"]
+        - containerPort: 32002
+        args: ["10002", "100", "200", "80", "1"]
+        volumeMounts:
+        - name: testbedconfig
+          mountPath: /tmp/src/conf/TestbedConfig.json
+          subPath: TestbedConfig.json
+      volumes:
+      - name: testbedconfig
+        configMap:
+          name: testbedconfig
       nodeSelector:
         nn: master
 ---
 apiVersion: v1
 kind: Service
-metadate:
+metadata:
   name: agent10002-service
 spec:
   selector:
     app: agent10002
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
-      port: 8092
-      targetPort: 8092
-      nodePort: 30012
+      port: 32002
+      name: listener
+      targetPort: 32002
+      nodePort: 32002

@@ -1,9 +1,10 @@
 package V2I;
 	
+/**
+ *  identifies pod definition 
+ */
 public class PodDefinition {
 		
-	
-	    
 	private String version = "apps/v1";
 	private String podname;
 	private String appname;
@@ -12,17 +13,21 @@ public class PodDefinition {
 	private String containerName;
 	private String imageName;
 	private String imagePullPolicy = "Always";
-	private int containerPort;
-	private int id;
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	private int type;
+	private int arg1;
+	private int arg2;
+	private String arg3;
+	private String arg4;
+	private int arg5;
+	private String arg6;
+	
+	private int containerPort1;
+	private int containerPort2;
+	private int containerPort3;
+	
+	
+	
 	public String getPodname() {
 		return podname;
 	}
@@ -72,41 +77,12 @@ public class PodDefinition {
 	}
 	
 	public int getContainerPort() {
-		return containerPort;
+		return containerPort1;
 	}
 	
 	public void setContainerPort(int containerPort) {
-		this.containerPort = containerPort;
+		this.containerPort1 = containerPort;
 	}
-	
-	
-	
-	/*
-	apiVersion: apps/v1
-	kind: Deployment
-	metadata:
-	  name: python-pub1
-	  labels:
-	    app: python-pub1
-	spec:
-	  replicas: 2
-	  selector:
-	    matchLabels:
-	      app: python-pub1
-	  template:
-	    metadata:
-	      labels:
-	        app: python-pub1
-	    spec:
-	      imagePullSecrets:
-	      - name: my-registry-key
-	      containers:
-	      - name: python-pub
-	        image: zeinabne/edge-testbed:pub
-	        imagePullPolicy: Always
-	        ports:
-	        - containerPort: 8081
-	     */
 	    
 	@Override
 	public String toString() {
@@ -133,9 +109,109 @@ public class PodDefinition {
 	                +"        image: " + imageName + "\n"
 	                +"        imagePullPolicy: " + imagePullPolicy+ "\n"
 	                +"        ports:\n"
-	                +"        - containerPort: " + containerPort+ "\n"
-	    			+"        args: [\""+id+"\"]";
+	                +"        "+getPorts()
+	    			+"        args: "+getArgs();
 	    		
 	                 
 	    }
+
+	public String getPorts() {
+		
+		if (type == 2)//service distributor
+			return "- containerPort: " + containerPort1 + "\n"+"        - containerPort: " + containerPort2 + "\n";
+		else if (type == 3)//edgeagent
+			return "- containerPort: " + containerPort1 + "\n"+"        - containerPort: " + containerPort2 + "\n"+"        - containerPort: " + containerPort3 + "\n";
+		else//vehicleagent
+			return "- containerPort: " + containerPort1+ "\n";
+		
+	}
+	
+	
+	/**
+	 * @return input arguments for deployment files of containers
+	 */
+	public String getArgs(){
+		
+		if (type == 3)//edgeagent
+			return "[\""+arg1+"\"]";
+			
+		else if (type == 2)//service distributor
+			return "[\""+ containerPort1 +"\", \""+ containerPort2 +"\"]";
+		
+		else//vehicleagent
+			return "[\""+arg1+"\", \""+arg3+"\", \""+arg4+"\", \""+arg5+"\", \""+arg6+"\"]";
+		
+	}
+
+	/**
+	 * @param i
+	 * @param containerImagesPath
+	 * @param srvdislis
+	 * @param srvdisres
+	 * @param eposplans
+	 * Sets input arguments for edgeagent
+	 */
+	public void setArg(int i, String containerImagesPath, String srvdislis, String srvdisres, int eposplans) {
+		arg1 = i ;
+		/*
+		 * arg3 = containerImagesPath; arg4 = srvdislis; arg6 = srvdisres; arg5 =
+		 * eposplans;
+		 */
+		
+	}
+
+	/**
+	 * @param port1
+	 * @param port2
+	 * Sets container ports for service distributor
+	 */
+	public void setContainerPort(int port1, int port2) {
+		// TODO Auto-generated method stub
+		type = 2;
+		containerPort1 = port1;
+		containerPort2 = port2; 
+		
+		
+	}
+	
+	public void setArg(int i, int j) {
+		// TODO Auto-generated method stub
+		arg1 = i ;//port
+		arg2 = j;
+			
+		}
+
+	/**
+	 * @param port1
+	 * @param port2
+	 * @param port3
+	 * Sets container port for edgeagent
+	 */
+	public void setContainerPort(int port1, int port2, int port3) {
+		// TODO Auto-generated method stub
+		type = 3;
+		containerPort1 = port1;
+		containerPort2 = port2; 
+		containerPort3 = port3;
+	}
+	
+	/**
+	 * @param id
+	 * @param edge_COVERAGE
+	 * @param cpu
+	 * @param memory
+	 * @param storage
+	 * @param mobDataset
+	 * Sets input arguments for vehicleagent container 
+	 */
+	public void setArg(int id, int edge_COVERAGE, int cpu, int memory, int storage, String mobDataset) {
+		type = 0;
+		arg1 = id ;
+		arg2 = edge_COVERAGE;
+		arg3 = ""+cpu;
+		arg4 = ""+memory;
+		arg5 = storage;
+		arg6 = mobDataset;
+		
+	}
 	}

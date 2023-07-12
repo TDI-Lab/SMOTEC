@@ -1,80 +1,78 @@
 package pi;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 
-import experiment.IEPOSExperiment;
-
-
+/**
+ * @author zeinab
+ * generates service placement plans for received connection requests
+ *
+ */
 public class SrvMapper {
-
+	
+	int edgeAgentIndex;
+	
 	List<Request> requests = new ArrayList<>();
 	List<Neighbor> neighbors = new ArrayList<>();
 	public Plan [] CandidatePlans;
 	
-	int edgeAgentIndex;
 	
 	public SrvMapper(int agent, List<Request> requests2, List<Neighbor> neighbors2) {
-		// TODO Auto-generated constructor stub
 		requests = requests2;
 		neighbors = neighbors2;
 		edgeAgentIndex = agent;
-		System.out.println("edgeAgent "+edgeAgentIndex+" starts plan generation...");
+		System.out.println("EdgeAgent "+edgeAgentIndex+" starts plan generation...");
 		
 		
 	}
 	/* 
-	 * generate placement plans for received requests
-	 * @return and array of candidate plans
+	 * generates placement plans for received requests
+	 * @return an array of placement plans named CandidatePlans
 	 */
 	public Plan[] generatePlans(){
 		
 		CandidatePlans = new Plan [Constants.EPOS_NUM_PLANS];
 		
-		 if (requests.size() == 0) {//code that does not access at all
-			 System.out.println("Requests for conection are  zero");	
-			 //Plans = emptyPlanGeneration();
+		 if (requests.size() == 0) {
+			 System.out.println("Requests for conection/placement are zero");	
 	         }
 	     else {
-	        	 int numReqToPlacement = agentsWithReq(requests); 
+	         
+	    	 int numReqToPlacement = agentsWithReq(requests); 
         	 for(short planIndex=0 ; planIndex < Constants.EPOS_NUM_PLANS ; planIndex++){  
-	        	 
-		         CandidatePlans[planIndex] = makePlan(planIndex, selectHosts(numReqToPlacement));
+	        	 CandidatePlans[planIndex] = makePlan(planIndex, selectHosts(numReqToPlacement));
 	         } 
+        	 
         	 Utility.writePlans(CandidatePlans);
-	         }
+	        }
 	         
 	    System.out.println("End of plan generation...........");
 	    return CandidatePlans;
 	         
 	}
 	
+	/**
+	 * @param requests2
+	 * @return
+	 * counts number of requests for service placement
+	 */
 	private int agentsWithReq(List<Request> requests2) {
-		// TODO Auto-generated method stub
 		int req = 0;
 		for (int i = 0;i<requests.size(); i++) 
 			if (requests.get(i).type == Constants.CONREQ)
 				req++;
 				
-		System.out.println("Num of conn requests: "+req);
+		System.out.println("Number of connection requests: "+req);
 		return req;
 	}
+	
+	/**
+	 * @return
+	 * if no requests received
+	 */
 	private Plan[] emptyPlanGeneration() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -82,6 +80,7 @@ public class SrvMapper {
 	 * @param planindex
 	 * @param candidateHosts
 	 * @return one candidate placement plan
+	 * generates one placement plan
 	 */
 	public Plan makePlan(short planindex, int[] candidateHosts) {
 	    
@@ -90,32 +89,31 @@ public class SrvMapper {
     	double [] tempStorageLoad = new double [neighbors.size()];//Initialise to zero
     	int assToCloud = 0;
     	
-    	Plan p = new Plan(edgeAgentIndex, planindex, requests.size(), neighbors.size());
+    	Plan p = new Plan(edgeAgentIndex, planindex, requests.size(), neighbors.size());//create a plan
          
     	int hostIndex;
     	for (int i = 0 ; i<requests.size() ; i++){
-        	//service = serviceList.get(i);
-            hostIndex = candidateHosts[i]; //index in the list of serverCloudlets
-            //System.out.println("service "+i);
+        	
+    		hostIndex = candidateHosts[i]; //edge node index in the list of neighbours
+        	//check if the assigned node has enough capacity?
             if (enoughCapacity(hostIndex, requests.get(i), tempCPULoad[hostIndex], tempMemLoad[hostIndex], tempStorageLoad[hostIndex])) {
-            	    	 
-            	p.updatePlan(hostIndex, i, requests.get(i), neighbors.get(hostIndex).CPUMax, neighbors.get(hostIndex).MemMax);
-            	tempCPULoad[hostIndex] += requests.get(i).getCPU();
-            	tempMemLoad[hostIndex] += requests.get(i).getMemory();
-            	tempStorageLoad[hostIndex] += requests.get(i).getStorage();
+            	    //update capacity of edge nodes
+	            	p.updatePlan(hostIndex, i, requests.get(i), neighbors.get(hostIndex).CPUMax, neighbors.get(hostIndex).MemMax);
+	            	tempCPULoad[hostIndex] += requests.get(i).getCPU();
+	            	tempMemLoad[hostIndex] += requests.get(i).getMemory();
+	            	tempStorageLoad[hostIndex] += requests.get(i).getStorage();
             	
             }
             else {//not enough capacity in candidate host so assign to cloud
             	p.incUnassTasks();
             	
             }
-	}
-    	//p.setCost(requests);
+    	}
+    	
     	return p;
         
 	}
     
-
 		/**
 		 * @param EdgDevId
 		 * @param service
@@ -128,12 +126,8 @@ public class SrvMapper {
      		
     		if ((service.getCPU() + pre_cpu > Constants.utilRatio * neighbors.get(EdgDevId).CPUMax) ||
      				(service.getMemory() + pre_mem > Constants.utilRatio * neighbors.get(EdgDevId).MemMax) || 
-     				(service.getStorage() + pre_storage > Constants.utilRatio * neighbors.get(EdgDevId).StorageMax)){//check cpu
-     			//System.out.println("	capacity constraint on edge unsatisfied:");
-     			//System.out.println("		cpu req: "+service.getCpuDemand1() +" host_cpu: "+ Constants.alpha * Constants.FP[FogDevId]+
-    			//	" mem req: "+service.getMemDemand() + " host_mem: "+ Constants.alpha * Constants.FM[FogDevId]+" storage req:"+
-    			//	service.getStorageDemand()+" host_storage: "+ Constants.alpha * Constants.FS[FogDevId]);
-                return false;
+     				(service.getStorage() + pre_storage > Constants.utilRatio * neighbors.get(EdgDevId).StorageMax)){
+     			 return false;
      		}
      		else 
 		return true;
@@ -152,11 +146,7 @@ public class SrvMapper {
   	        while (i < numOfServices){
   	        	Random ran = new Random();
   	        	candid = ran.nextInt(maxid) + 0;
-
-  	        	//candid = minid + (int)(Math.random() * ((maxid - minid) + 1));
-  	            //candid = ThreadLocalRandom.current().nextInt(minid, maxid + 1);
-  	           // System.out.println("candid "+candid);
-  	            candidateEdgIndex[i] = candid;
+  	        	candidateEdgIndex[i] = candid;
   	            	
   	            i++;
   	            }

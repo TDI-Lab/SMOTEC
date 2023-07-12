@@ -18,24 +18,25 @@ spec:
       - name: my-registry-key
       containers:
       - name: agent10003
-        image: zeinabne/edge-testbed:agents
+        image: zeinabne/edge-testbed:vehagent1
         imagePullPolicy: Always
         ports:
-        - containerPort: 8093
-        args: ["10003"]
+        - containerPort: 32003
+        args: ["10003", "2000", "150", "120", "80", "1"]
       nodeSelector:
         nn: master
 ---
 apiVersion: v1
 kind: Service
-metadate:
+metadata:
   name: agent10003-service
 spec:
   selector:
     app: agent10003
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
-      port: 8093
-      targetPort: 8093
-      nodePort: 30013
+      port: 32003
+      name: listener
+      targetPort: 32003
+      nodePort: 32003

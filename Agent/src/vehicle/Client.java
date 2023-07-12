@@ -1,26 +1,28 @@
 package vehicle;
 
 import java.util.StringTokenizer;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Context;
 import org.zeromq.ZMQ.Socket;
 
+
+/**
+ * @author zeinab
+ * This class introduces a ZeroMQ client which is responsible for creating/destroying communication links with edge network
+ */
 public class Client {
 
 	String myId;
 	Vehicle v;
 	
 	Context context ;
+	
 	Socket socket1 ;
 	Socket socket2 ;
 	Socket socket3 ;
 	Socket socket4 ;
+	private int megSendNum = 10;
 
 	public Client(Vehicle v, Context context2) {
 		this.myId = v.getName();
@@ -33,13 +35,21 @@ public class Client {
 		
 	}
 
-	public int sendRequest(String add, int connDest, int t) {
+	/**
+	 * @param address
+	 * @param connectionDest
+	 * @param reqtype
+	 * @return sends connection requests to connectionDest node with the address specified in oreder to connect to the edge network
+	 * @throws InterruptedException
+	 */
+	public int sendRequest(String address, int connectionDest, int reqtype) throws InterruptedException {
 		
-		if (t == Constants.CONNREQ) {
-			int connectedEdge = connectToEdge(makeReq(t, connDest), add, connDest);
-			if (connectedEdge != -1)
-				return host(connectedEdge);
-			// close both
+		if (reqtype == Constants.CONNREQ) {
+			int connectedEdge = connectToEdge(makeReq(reqtype, connectionDest), address, connectionDest);
+			if (connectedEdge != -1) {
+				return serviceHostReq(connectedEdge);
+			}
+	
 			else
 				return -1;
 		}
@@ -47,19 +57,28 @@ public class Client {
 		
 	}
 
-	private int host(int connectededge) {
-		String clientAdd = "tcp://localhost:" + (5800 + connectededge);// myId add:port
-
-		Consumer co = new Consumer();
+	/**
+	 * @param connectededge the edge node with which the vehicleagent is now connected
+	 * waits until receives a host for its traffic monitoring service
+	 * @return
+	 */
+	private int serviceHostReq(int connectededge) {
+		
+		String clientAdd = "tcp://edge" +connectededge+"-response:"+ (Constants.ResPortTopUp + connectededge);
+		Consumer co = new Consumer(context);
 		co.open(clientAdd);
 		int host = co.waitAndReceive(myId);
-		co.close();
-
+	
 		return host;
 	}
 
+	/**
+	 * @param type
+	 * @param dest
+	 * makes messages to send to dest based on the request type
+	 * @return
+	 */
 	private String makeReq(int type, int dest) {
-		// TODO Auto-generated method stub
 		if (type == Constants.CONNREQ)
 			return "conn:" + dest + ":" + v.getName() + ":" + v.getCPU() + ":" + v.getMemory() + ":" + v.getStorage() + ":"+ v.travelTimeId;
 		else if (type == Constants.RECOREQ)
@@ -75,77 +94,101 @@ public class Client {
 
 	}
 
-	public int down(String edgeServerAdd, int msgdest, int downreq) {
+	/**
+	 * @param edgeServerAdd
+	 * @param msgdest
+	 * @param downreq
+	 * handles closing communication links with the edge network 
+	 */
+	public void down(String edgeServerAdd, int msgdest, int downreq) {
+		
 		System.out.println("Client shutting down gracefully");
 		socket4.connect(edgeServerAdd);
-        socket4.setReceiveTimeOut(2000);
+        //socket4.setReceiveTimeOut(2000);
 		String replyValue;
 
-		for (int request_nbr = 0; request_nbr < 3; request_nbr++) {
-			socket4.send(makeReq(downreq, msgdest).getBytes(), 0);
-			byte[] reply = socket4.recv();
-			 //type+":"+myId+":"+vehAgent;
-			if (reply != null) {
+		for (int up_nbr = 0; up_nbr < megSendNum; up_nbr++) {
+			  
+			  socket4.send(makeReq(downreq, msgdest).getBytes(), 0);
+			  System.out.println("Closing connections with edge network, request sent...");
+			  byte[] reply = socket4.recv();
+			  System.out.println("Close response received...");
+			  if (reply != null) {
 				replyValue = new String(reply);
-				System.out.println("Received reply " + request_nbr + " [" + replyValue + "]");
+				System.out.println("Received reply " + up_nbr + " [" + replyValue + "]");
 				StringTokenizer str = new StringTokenizer(replyValue, ":");
 				str.nextToken();// down
-				str.nextToken();// edgeAgent
-				if (str.nextToken().compareTo(myId) == 0) {// vehAgent
+				str.nextToken();// EdgeAgent
+				if (str.nextToken().compareTo(myId) == 0) {// VehicleAgent
 					System.out.println("Received ack: " + " [" + replyValue + "]");
 					break;
 				}
-
+			/*try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			*/
 			}
-
 		}
-		return 0;
+		Constants.numMsg += megSendNum;
 
 	}
 
+	/**
+	 * @param add1
+	 * @param add2
+	 * @param newEdgeAgent candidate EdgeAgent to connect to: the access point in the coverage range
+	 * @param oldEdgeAgent current connected EdgeEAgent
+	 * @param type
+	 * @return the selected host id for the vehicleagent service
+	 * @throws InterruptedException
+	 */
 	public int handover(String add1, String add2, int newEdgeAgent, int oldEdgeAgent, int type) throws InterruptedException {
-		// type == Constants.RECOREQ
-		/*
-		 * public void stop() { socket.close(); context.term(); }?????
-		 */
-	
-
-		System.out.println("Client launch and doing handover");
+		
+		System.out.println("Request for handover");
 		boolean flag = false;
 		socket2.connect(add2);
         socket2.setReceiveTimeOut(2000);
         socket2.setSendTimeOut(2000);
 		String replyValue;
 		int responder;
-		System.out.println("hiiii "+makeReq(Constants.RECOREQ, newEdgeAgent)+" "+add2+" "+makeReq(Constants.DISCREQ, oldEdgeAgent)+" "+add1);
-		//Thread.sleep(2000);
+		
 		String myReq = makeReq(Constants.RECOREQ, newEdgeAgent);
+		
+		//sends connection request to the next connected EdgeAgent
 		for (int request_nbr = 0; request_nbr < 3; request_nbr++) {
-			socket2.send(myReq.getBytes(), 0);
+			System.out.println("hii3");
+			socket2.send((myReq).getBytes(), 0);
+			Constants.numMsg ++;
 			byte[] reply = socket2.recv();
-			 //type+":"+myId+":"+vehAgent;
+			
+			//type+":"+myId+":"+vehAgent;
 			if (reply != null) {
 				replyValue = new String(reply);
 				System.out.println("Reco Received reply " + request_nbr + " [" + replyValue + "]");
 				StringTokenizer str = new StringTokenizer(replyValue, ":");
 				str.nextToken();// reco
-				// edgeAgent
-				responder = Integer.parseInt(str.nextToken());
+				responder = Integer.parseInt(str.nextToken());// edgeAgent
+				
 				if ((str.nextToken().compareTo(myId) == 0)&&(newEdgeAgent == responder)) {// vehAgent
-					System.out.println("Received ack: " + " [" + replyValue + "]");
+					System.out.println("Received ack match: " + " [" + replyValue + "]");
 					break;
 				}
 
 			}
 
+		
 		}
-
+		//sends disconnect request to the current connected EdgeAgent 
 		myReq = makeReq(Constants.DISCREQ, oldEdgeAgent);
 		socket3.connect(add1);
 		for (int request_nbr = 0; request_nbr < 3; request_nbr++) {
 			socket3.send(myReq.getBytes(), 0);
 			byte[] reply = socket3.recv();
-
+			Constants.numMsg ++;
+			
 			if (reply != null) {
 				replyValue = new String(reply);
 				System.out.println("Disc Received reply " + request_nbr + " [" + replyValue + "]");
@@ -153,7 +196,8 @@ public class Client {
 				str.nextToken();// disc
 				responder = Integer.parseInt(str.nextToken());// edgeAgent
 				if ((str.nextToken().compareTo(myId) == 0)&&(v.getConnectedEdge().id  == responder)) {// vehAgent
-					System.out.println("Received ack: " + " [" + replyValue + "], handover done!");
+					System.out.println("Received ack match: " + " [" + replyValue + "]");
+				
 					flag = true;
 					break;
 				}
@@ -169,81 +213,42 @@ public class Client {
 
 	}
 
-	/**
-	 * @param serverAdd 
-	 * @param connDest 
-	 * @param newEdge  candidate ap to connect to: the access point in the coverage
-	 *                 range
-	 * @param veh      vehicle
-	 * @param handover
-	 * @return selected host index for the vehicle service the method sends
-	 *         connection request to ap, waits for ack and a host id from ap
-	 * @throws Exception
-	 */
-	/*
-	 * private static int Handover(int newEdge, Vehicle veh) throws Exception {
-	 * System.out.println(
-	 * "------------------------------------------------------------");
-	 * 
-	 * subscribe for the message with the topic ap:agent as the ack
-	 * 
-	 * String ReqToAck = "reco-"+newEdge+"-"+veh.getName();
-	 * 
-	 * wait on ack message reception
-	 * 
-	 * CountDownLatch receivedSignal = new CountDownLatch(1);
-	 * mqttClient.subscribe(ReqToAck, (topic, msg) -> {
-	 * System.out.println("reconnect request ack received: topic="+ ReqToAck+
-	 * " content=" +new String(msg.getPayload())); receivedSignal.countDown(); });
-	 * 
-	 * 
-	 * publish connection request messages: TOPIC = "reconnect-"+edgeId; content =
-	 * u.getName()+":"+u.getCPU()+":"+u.getMemory()+":"+u.getStorage()+":"+u.
-	 * travelTimeId;
-	 * 
-	 * Callable<Void> target = new MqttPublisher(mqttClient, newEdge, veh, true);
-	 * ExecutorService executor = Executors.newSingleThreadExecutor(); try {
-	 * target.call(); } catch(Exception ex) { throw new RuntimeException(ex); }
-	 * 
-	 * target = new MqttPublisher(mqttClient, newEdge, veh, false); executor =
-	 * Executors.newSingleThreadExecutor(); try { target.call(); } catch(Exception
-	 * ex) { throw new RuntimeException(ex); }
-	 * 
-	 * 
-	 * receivedSignal.await(30,TimeUnit.SECONDS);//await();// executor.shutdown();
-	 * 
-	 * if connected with the ap then wait for the selected host from the ap
-	 * 
-	 * if (receivedSignal.getCount() == 0) {
-	 * 
-	 * System.out.println("VehAgent "+veh.getName()+" received an ack from "
-	 * +newEdge+" and handover is done."); return newEdge; }
-	 * 
-	 * else { return -1; } }
-	 */
+	
 
-	private int connectToEdge(String message, String serverAdd, int connDest) {
-		// TODO Auto-generated method stub
-		// "conn-"+edgeagentId+"-"+vAgent.getName()
+	/**
+	 * @param message
+	 * @param serverAdd
+	 * @param connDest
+	 * @return
+	 * @throws InterruptedException
+	 * Send connection message to its closest EdgeAgent connDest
+	 * Waits to receive an ack from it
+	 */
+	private int connectToEdge(String message, String serverAdd, int connDest) throws InterruptedException {
 		socket1.connect(serverAdd);
-//	        requester.setReceiveTimeOut(2000);
+		//socket1.setReceiveTimeOut(1000);
 		int edge = -1;
-		System.out.println("launch and connect to server " + serverAdd);
+		System.out.println("Start connecting to the EdgeAgent" + serverAdd);
 		String replyValue;
 
-		for (int request_nbr = 0; request_nbr < 3; request_nbr++) {
+		for (int request_nbr = 0; request_nbr < 5; request_nbr++) {
 			socket1.send((message).getBytes(), 0);
+			Constants.numMsg ++;
+			System.out.println("Request to EdgeAgent : [" + serverAdd + "]");
+			
+			//Thread.sleep(2000);
 			byte[] reply = socket1.recv();
-
+			//System.out.println("Reply from EdgeAgent : [" + serverAdd + "]");
+			
 			if (reply != null) {
 				replyValue = new String(reply);
-				System.out.println("Received reply " + request_nbr + ": [" + replyValue + "]");
+				System.out.println("Received reply from EdgeAgent : [" + replyValue + "]");
 				StringTokenizer str = new StringTokenizer(replyValue, ":");
 				str.nextToken();// conn
 				String testToken = str.nextToken();// edgeAgent
 				if ((str.nextToken().compareTo(myId) == 0)&&(testToken.compareTo(connDest+"") == 0)) {// vehAgent
 					edge = Integer.parseInt(testToken);// edgeAgent
-					System.out.println("Received ack: " + " [" + replyValue + "], waiting for host");
+					System.out.println("Received ack: " + " [" + replyValue + "], waiting for receiving selected host from EdgeAgent");
 					break;
 
 				}
@@ -261,8 +266,7 @@ public class Client {
 		socket2.close();
 		socket3.close();
 		socket4.close();
-		
-		//context.term();
+
 	}
 
 }

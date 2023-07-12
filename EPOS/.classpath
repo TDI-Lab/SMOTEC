@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/home/master/Documents/lastUpdate-0mq/EPOS/src/jar/jnacl-1.0.0.jar"/>
 	<classpathentry kind="lib" path="/home/master/Documents/lastUpdate-0mq/EPOS/src/jar/jeromq-0.5.3.jar"/>
 	<classpathentry kind="lib" path="/home/master/Documents/lastUpdate-0mq/EPOS/src/jar/IEPOS-Tutorial.jar"/>
+	<classpathentry kind="lib" path="/home/master/Documents/lastUpdate-0mq/EPOS/src/jar/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
