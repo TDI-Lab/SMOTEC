@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: agent10005
+  labels: 
+    app: agent10005
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent10005
+  template:
+    metadata:
+      labels:
+        app: agent10005
+    spec:
+      imagePullSecrets:
+      - name: my-registry-key
+      containers:
+      - name: agent10005
+        image: zeinabne/edge-testbed:vehagent1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 32005
+        args: ["10005", "2000", "40", "140", "80", "1"]
+      nodeSelector:
+        nn: master
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent10005-service
+spec:
+  selector:
+    app: agent10005
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 32005
+      name: listener
+      targetPort: 32005
+      nodePort: 32005
