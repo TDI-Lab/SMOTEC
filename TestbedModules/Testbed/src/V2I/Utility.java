@@ -301,7 +301,7 @@ public class Utility {
 					if (!deployed.contains(deployment[0])) {
 						
 						experiment.get(run).addLoad(edgeDevices.get(Integer.parseInt(deployment[1])), vehicleagents.get(vehagentid.get(Integer.parseInt(deployment[0]))));
-						System.out.println("Deploying new service for vehicleagent "+deployment[0]+" "+Integer.parseInt(deployment[1])+" "+vehagentid.get(Integer.parseInt(deployment[0]))+" ");
+						//System.out.println("Deploying new service for vehicleagent "+deployment[0]+" "+Integer.parseInt(deployment[1])+" "+vehagentid.get(Integer.parseInt(deployment[0]))+" ");
 						//10000 0 0
 						//10001 1 1
 							String ShCommand = "bash "+Constants.srvDeployScript+" edge"+i+" "+deployment[0];
@@ -332,11 +332,11 @@ public class Utility {
 				while((line2 = csvInRelease.readLine()) != null) {
 						String[] deployment = line2.split(",");
 						if (!released.contains(deployment[0])) {
-						System.out.println("Releasing service for vehicle agent "+deployment[0]+" "+deployment[0].substring(0, 3));
+						//System.out.println("Releasing service for vehicle agent "+deployment[0]+" "+deployment[0].substring(0, 3));
 						
 						if(deployment[0].substring(0, 3).compareTo("srv") == 0) {
 							experiment.get(run).deducLoad(edgeDevices.get(Integer.parseInt(deployment[1])), vehicleagents.get(vehagentid.get(Integer.parseInt(deployment[0].substring(3, 8)))));
-							System.out.println("Releasing service for vehicle agent "+deployment[0]+" "+Integer.parseInt(deployment[1])+" "+vehagentid.get(Integer.parseInt(deployment[0].substring(3, 8))));
+							//System.out.println("Releasing service for vehicle agent "+deployment[0]+" "+Integer.parseInt(deployment[1])+" "+vehagentid.get(Integer.parseInt(deployment[0].substring(3, 8))));
 						}
 						String ShCommand = "bash "+Constants.srvReleaseScript+deployment[0];
 					    Process p = Runtime.getRuntime().exec(ShCommand);

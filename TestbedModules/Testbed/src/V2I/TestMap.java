@@ -44,6 +44,7 @@ public class TestMap {
 		            SetArea((int) (long) jsonObject.get("max_x"), (int) (long) jsonObject.get("max_y"), 
 	            		(int) (long) jsonObject.get("min_x"),(int) (long) jsonObject.get("min_y"));
 		            
+		          Constants.ExperimentTime = (int) (long) jsonObject.get("ExperimentTime")*1000;
 		          Constants.K3sMaster = (String) jsonObject.get("Orchestrator");
 		          Constants.numEdgeNodes = (int) (long) jsonObject.get("NumEdgeNodes");
 	              Constants.Edge_COVERAGE =  (int) (long) jsonObject.get("AP_COVERAGE");

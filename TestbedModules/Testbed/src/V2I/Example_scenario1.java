@@ -41,6 +41,9 @@ public class Example_scenario1 {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
+		System.out.println("SMOTEC started!");
+		System.out.println("************************************************************");
+		System.out.println("Stage1: preparation...");
 		int run = 0;
 		long startTime = System.currentTimeMillis();
 		long elapsedTime ; 
@@ -77,6 +80,10 @@ public class Example_scenario1 {
 		long baseTime = System.currentTimeMillis()/1000;
 		long newTime;
 		
+		System.out.println("************************************************************");
+		
+		System.out.println("Stage2: Execution...");
+		
 		//download log files of containers and deploy/release services
 		while (true) {
 			
@@ -87,8 +94,9 @@ public class Example_scenario1 {
 			Load l = new Load(newTime, edgeDevices);
 			experiment.add(run, l);
 			
-	        if (elapsedTime > 600000) {
-	        	System.out.println("End of experiment!");
+	        if (elapsedTime > Constants.ExperimentTime) {
+	        	System.out.println("************************************************************");
+	    		System.out.println("End of experiment!");
 	        	break;
 	        }
 
@@ -98,7 +106,7 @@ public class Example_scenario1 {
 			 	
 			Utility.downloadRelDep();
 			
-			Thread.sleep(3000);
+			Thread.sleep(6000);
 			
 			Utility.DeployRelease(run, experiment, edgeDevices, deployed, released, vehicleagents, vehagentid);
 		

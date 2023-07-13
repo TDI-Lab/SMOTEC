@@ -57,6 +57,7 @@ public class Constants {
 	public static String EdgeAgentImage;
 	public static String MobileAgentImage;
 	public static String K3sMaster;
+	public static int ExperimentTime;
 	
 	
 	static void initialize(){

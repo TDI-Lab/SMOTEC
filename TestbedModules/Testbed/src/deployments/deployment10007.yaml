@@ -15,14 +15,22 @@ spec:
         app: agent10007
     spec:
       imagePullSecrets:
-      - name: my-registry-key
+      - name: 
       containers:
       - name: agent10007
-        image: zeinabne/edge-testbed:vehagent1
+        image: zeinabne/smotec:vehicleagent
         imagePullPolicy: Always
         ports:
         - containerPort: 32007
-        args: ["10007", "2000", "100", "130", "80", "1"]
+        args: ["10007", "100", "200", "80", "1"]
+        volumeMounts:
+        - name: testbedconfig
+          mountPath: /tmp/src/conf/TestbedConfig.json
+          subPath: TestbedConfig.json
+      volumes:
+      - name: testbedconfig
+        configMap:
+          name: testbedconfig
       nodeSelector:
         nn: master
 ---

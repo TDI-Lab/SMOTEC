@@ -6,4 +6,4 @@ cd ~/Documents/output/deprel/edge0
 cd ~/Documents/output/deprel/edge1
 >deploy.csv
 >release.csv
-echo "update done!"
+echo "output directory updated!"
