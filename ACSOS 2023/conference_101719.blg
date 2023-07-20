@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d (TeX Live 2022)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: conference_101719.aux
+The style file: plain.bst
+Database file #1: mybib.bib
+Repeated entry---line 99 of file mybib.bib
+ : @inproceedings{gedawy2016cumulus
+ :                                 ,
+I'm skipping whatever remains of this entry
+Warning--empty journal in boubin2022prowess
+Warning--empty journal in cheriftestbed
+Warning--empty year in cheriftestbed
+You've used 20 entries,
+            2118 wiz_defined-function locations,
+            606 strings with 9002 characters,
+and the built_in function-call counts, 9897 in all, are:
+= -- 940
+> -- 643
+< -- 13
++ -- 255
+- -- 234
+* -- 743
+:= -- 1590
+add.period$ -- 68
+call.type$ -- 20
+change.case$ -- 175
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 353
+empty$ -- 659
+format.name$ -- 234
+if$ -- 2094
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 19
+newline$ -- 101
+num.names$ -- 40
+pop$ -- 223
+preamble$ -- 1
+purify$ -- 155
+quote$ -- 0
+skip$ -- 260
+stack$ -- 0
+substring$ -- 481
+swap$ -- 129
+text.length$ -- 13
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 80
+warning$ -- 3
+while$ -- 84
+width$ -- 22
+write$ -- 222
+(There was 1 error message)
