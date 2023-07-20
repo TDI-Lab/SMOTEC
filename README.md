@@ -28,9 +28,11 @@ You may change the parameters based on the requitrements of your experiment such
 SMOTEC utilizes the node lables in kubernetes cluster for identifying nodes for service placement. For this, you need to update testbedConfig.json based on your edge infrastructure:
 
 Check the label of your edge nodes:
+
 $ kubectl get nodes --show-labels
 
 SMOTEC uses the label/value pair with the label "nn" to deploy a container image on an edge node. Choose your nodes you want to be part of your edge infrastructure one by one, and add a label to them by running the following command:
+
 $ kubectl label nodes node-name nn="your-label"
 
 Update the config file by editing the values for "NodeLabel" and "Orchestrator" according to the label values you used in previous command. The node identified as the "Orchestrator" will run service distributor and mobile agents. The remaining nodes identified by "NodeLabel" will be used as the edge infrastructure to run edge agents and user services.
