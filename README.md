@@ -10,18 +10,18 @@ Download the Testbed source code and output directory. Put the Testbed and outpu
 
 Make sure that a version of Oracle Java 17 is installed. You can download it from [here](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html).
 
-Make sure K3s is up and running by running the following command in orchestrator terminal:
+Make sure K3s service is up and running by executing the following command on orchestrator terminal:
 
 $sudo systemctl status k3s.service
 
 $sudo kubectl get nodes
 
-Remove sudo permission for calling k3s API:
+Remove sudo permission for calling K3s API:
 
 $sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 
 ## Config SMOTEC
-Config parameters for a traffic monitoring experiment are available in Testbed/Conf/TestbedConfig.json with the default values for a 3-Node infrastructure including two edge nodes and one orchestrator and 10 mobile nodes.
+The configuration parameters for a default traffic monitoring experiment are available in Testbed/Conf/TestbedConfig.json with the values for a 3-node infrastructure including two edge nodes and one orchestrator, and 10 mobile nodes.
 
 You may change the parameters based on the requitrements of your experiment such as the number of edge nodes and their characteristics (e.g., location, coverage range, processing power, and memory), the number of mobile nodes and their service requirements (e.g., processing power and memory), Name and path to the testbed Docker images (images for MobileAgent, EdgeAgent, ServiceDistributor, and Service), EPOS simulation settings, etc.
 
